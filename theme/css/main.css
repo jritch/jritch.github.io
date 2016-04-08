@@ -2,40 +2,25 @@ html {
   font: 400 14px / 20px "Antwerp Regular","Times New Roman",Times,serif; }
 
 a {
-  color: #33b5e5; }
+  color: #C74350; }
   a:hover {
-    color: #0099cc; }
+    color: #FF0022; }
 
 .uk-navbar-brand {
   text-transform: uppercase; }
 
 .uk-article-meta > a {
-  color: #444; }
+  color: black; }
   .uk-article-meta > a:hover {
-    color: #444; }
+    color: black; }
 .uk-article-meta > .uk-icon-comment {
-  color: #444; }
-
-.uk-icon-twitter {
-  color: #00B0ED; }
-
-.uk-icon-facebook, .uk-icon-facebook-square {
-  color: #3B5999; }
-
-.uk-icon-google-plus, .uk-icon-google-plus-square {
-  color: #D34836; }
-
-.uk-icon-github {
-  color: #333; }
-
-.uk-icon-envelope {
-  color: #444; }
+  color: black; }
 
 .uk-nav-side > li.uk-active > a {
-  background: #28D1B2; }
+  background: #C74350; }
 
 .uk-pagination > .uk-active > span {
-  background: #28D1B2; }
+  background: #C74350; }
 
 .uk-icon-medium {
   margin-right: 0.3em; }
@@ -77,8 +62,6 @@ a {
   padding-left: 0;
   color: #000000;
   text-decoration: none; }
-  .agit-brand:hover, .agit-brand:focus {
-    color: #cc0011; }
   @media (max-width: 767px) {
     .agit-brand {
       padding: 0;
@@ -128,18 +111,6 @@ a {
   color: white; }
   .agit-icons-small > li > a:hover {
     color: white; }
-.agit-icons-small .uk-icon-rss {
-  background-color: #FF6600; }
-.agit-icons-small .uk-icon-twitter {
-  background-color: #00B0ED; }
-.agit-icons-small .uk-icon-facebook {
-  background-color: #3B5999; }
-.agit-icons-small .uk-icon-google-plus {
-  background-color: #D34836; }
-.agit-icons-small .uk-icon-github {
-  background-color: #333; }
-.agit-icons-small .uk-icon-envelope {
-  background-color: #059; }
 
 .agit-badges li {
   float: left;

@@ -1,0 +1,16 @@
+* {
+  margin: 10;
+  padding: 0;
+}
+
+svg {
+  border-style:solid;
+}
+
+body {
+  background: white;
+}
+
+* {
+  font-family: sans-serif;
+}

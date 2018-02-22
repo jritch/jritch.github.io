@@ -92,138 +92,6 @@ var animate1 = function (svg)
 
 }
 
-var animate2 = function(svg) {
-var dataSet = [];
-
-for(i=0;i<10;i++)
-{
-	dataSet.push({t:1,x:i * 20, y: i*20 + d3.randomUniform(-10, 10)() });
-}
-
-svg.append('line').attrs({x:300,y:2,x:50,y:300,fill:'black'});
-
-
-var circle = svg.selectAll('circle')
-    .data(dataSet)
-    .enter()
-    .append('circle')
-    .attrs({
-        r:10,
-        cx:function(d, i){ return 400 + d.x},
-        cy:function(d, i){ return 400 - d.y},
-        fill: 'red'
-    });
-
-var t=0;
-var move = false;
-//var animation_elapsed, animation_start;
-var off_time = 0, last_elapsed;
-
-svg
-    .append('circle')
-    .attrs({
-        r:60,
-        cx:200,
-        cy:400,
-        fill: 'red'
-    })
-    .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
-
-  path = d3.path();
-  path.moveTo(400, 400);
-  path.lineTo(600-10, 200-10);
-  path.closePath();
-  svg.append("path").attr("d",path.toString()).attr("stroke","black").attr("stroke-width",2).attr("id","d_line")
-
-  path = d3.path();
-  path.moveTo(400, 400);
-  path.lineTo(600+72, 400);
-  path.closePath();
-  svg.append("path").attr("d",path.toString()).attr("stroke","black").attr("stroke-width",0).attr("id","h_line")
-
-  function dragstarted(d, i){
-
-        // the first time the button is clicked, create the timer
-        if(t == 0)
-        {
-        	t=d3.timer(animate);
-        }
-
-  			move = true;
-
-   }
-
-  function dragged(d,i) {}
-
-  function dragended() {
-        move = false;
-  }
-
-  function animate(elapsed) {
-
-      T = 300.0;
-      t = (elapsed -  off_time) / T ;
-
-      wt =  t * 3.14159 / 4 / 0.5 ;
-
-  		if (t < 0.5 )
-      {
-        svg.select("#h_line").attr("stroke-width",0)
-        svg.select("#d_line").attr("stroke-width",2)
-          circle
-              .attr('cx', function(d) {
-               return 400 +  (d.x * Math.cos(-wt) - d.y * Math.sin(-wt) ) ;
-             })
-             .attr('cy', function(d) {
-          	   d.t = 1;
-               return 400 -  (d.x * Math.sin(-wt) + d.y * Math.cos(-wt)) ;
-
-             })
-
-             ;
-      }
-      else
-      {
-            svg.select("#h_line").attr("stroke-width",2)
-            svg.select("#d_line").attr("stroke-width",0)
-            circle
-             .attr('cy', function(d) {
-
-               d.t =  Math.max(Math.min(30 * (t) - 10,10),0)
-
-               return 400 - d.t * (d.x * Math.sin(-3.14159/4) + d.y * Math.cos(-3.14159/4))
-
-
-             })
-
-             ;
-      }
-
-
-      if (!move) {
-        if (t < 0)
-        {
-          off_time += elapsed - last_elapsed
-        }
-        else {
-        off_time += 2 * (elapsed - last_elapsed)
-        }
-      }
-      else if ( t > 1.0)
-      {
-        off_time += elapsed - last_elapsed
-
-      }
-
-      last_elapsed = elapsed;
-
-
-
-  }
-}
 
 var animate2 = function(svg) {
 var dataSet = [];
@@ -268,7 +136,7 @@ svg
 
   path = d3.path();
   path.moveTo(400, 400);
-  path.lineTo(600-10, 200-10);
+  path.lineTo(600-10, 200+10);
   path.closePath();
   svg.append("path").attr("d",path.toString()).attr("stroke","black").attr("stroke-width",2).attr("id","d_line")
 

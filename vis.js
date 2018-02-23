@@ -98,7 +98,7 @@ var dataSet = [];
 
 for(i=0;i<10;i++)
 {
-	dataSet.push({t:1,x:i * 20, y: i*20 + d3.randomUniform(-10, 10)() });
+	dataSet.push({t:1,x:i * 20, y: i*20 + d3.randomUniform(-3, 3)() + 10 * Math.sin((i + d3.randomUniform(-1,1)()/5.0) * 3.14159/5) });
 }
 
 svg.append('line').attrs({x:300,y:2,x:50,y:300,fill:'black'});
@@ -166,7 +166,7 @@ svg
 
   function animate(elapsed) {
 
-      T = 300.0;
+      T = 200.0;
       t = (elapsed -  off_time) / T ;
 
       if (t > 1.0) { t=1.0000001} ;
@@ -306,7 +306,7 @@ var circle = svg.selectAll('rect')
 
 function animate(elapsed) {
 
-    T = 150.0;
+    T = 75.0;
     t = (elapsed -  off_time) / T ;
 
     if (t > 1.0) { t=1.0000001} ;

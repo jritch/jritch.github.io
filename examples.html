@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Demos</title>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+    <svg height=500 width=700></svg>
+    <ul style="font-size:20px">
+      <em>
+        <li>Shows synthetic data of the form y=x, with a smaller sinusoidal trend and random noise.</li>
+        <li>Rotating the data by 90 degrees clockwise, the line of best fit now coincides with the x-axis.</li>
+        <li>Then, we stretch the data along the y-axis, so we can clearly see which data are above and below the trend-line.</li>
+        <li>This allows us to notice the secondary trend in the data.</li>
+        <li>This is equivalent to examining the coordinates of the data after performing Principal Component Analysis.</li>
+      </em>
+    </ul>
+    <br>
+    <svg height=500 width=700></svg>
+    <ul style="font-size:20px">
+      <em>
+        <li>If we wish to compare the values of the different bars, we must compare the lengths of the elements. </li>
+        <li>By re-normalizing the data, we convert a mesure of length to a judgement of position along a common scale. </li>
+        <li>This kind of shifting of the y-axis is useful, but also also perceived as potentially deceptive (outlined in Tufte).</li>
+        <li>By making this a transient, non-destructive transformation, we avoid this criticism. </li>
+      </em>
+    </ul>
+  </body>
+  <script src="vis.js"></script>
+</html>

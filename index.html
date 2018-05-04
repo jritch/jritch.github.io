@@ -1,34 +1,81 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
-  <head>
-    <meta charset="utf-8"/>
-    <title>Demos</title>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="main.css">
-  </head>
-  <body>
-    <svg height=500 width=700></svg>
-    <ul style="font-size:20px">
-      <em>
-        <li>Shows synthetic data of the form y=x, with a smaller sinusoidal trend and random noise.</li>
-        <li>Rotating the data by 90 degrees clockwise, the line of best fit now coincides with the x-axis.</li>
-        <li>Then, we stretch the data along the y-axis, so we can clearly see which data are above and below the trend-line.</li>
-        <li>This allows us to notice the secondary trend in the data.</li>
-        <li>This is equivalent to examining the coordinates of the data after performing Principal Component Analysis.</li>
-      </em>
-    </ul>
-    <br>
-    <svg height=500 width=700></svg>
-    <ul style="font-size:20px">
-      <em>
-        <li>If we wish to compare the values of the different bars, we must compare the lengths of the elements. </li>
-        <li>By re-normalizing the data, we convert a mesure of length to a judgement of position along a common scale. </li>
-        <li>This kind of shifting of the y-axis is useful, but also also perceived as potentially deceptive (outlined in Tufte).</li>
-        <li>By making this a transient, non-destructive transformation, we avoid this criticism. </li>
-      </em>
-    </ul>
-  </body>
-  <script src="vis.js"></script>
-</html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Jacob Ritchie's personal website">
+    <meta name="author" content="Jacob Ritchie">
+
+    <title>Jacob Ritchie</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./index_files/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./index_files/navbar-top-fixed.css" rel="stylesheet">
+
+  <body class="vsc-initialized">
+
+    <!--
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Publications</a>
+          </li>
+         <li class="nav-item">
+            <a class="nav-link" href="#">Teaching</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    -->
+    
+    <main role="main" class="container">
+      <div class="jumbotron">
+        <h2 class="name-header">Jacob Ritchie</h2>
+        <div class="row">
+            <div class="media-left">
+                <span > <img src="headshot.jpg" size="200px" alt="A smiling photo of Jacob Ritchie." class="img-thumbbail img-responsive profile-image"><span>
+            </div>
+            <div class="media-body">
+                <p class="lead" >I am a <b>M.Sc. Student in Computer Science</b> at the <b>University of Toronto</b>. I specialize in <b>Human-Computer Interaction</b> and am supervised by <a href="http://www.dgp.toronto.edu/~dwigdor/"> <b>Daniel Wigdor</b></a> and <a href="fannychevalier.net"><b>Fanny Chevalier</b></a> of the <a href="http://www.dgp.toronto.edu/home/"><b>Dynamic Graphics Project</b></a>.</p>
+                <p>My current research interests lie in information visualization, specifically in how to bring powerful interactive visualizations to users on mobile devices.</p> <p>I have previously done research in machine learning, bioinformatics, robotics, and scientific computing. I completed my undergraduate degree in Engineering Science, with a minor in Robotics, at the University of Toronto </p>
+                <p>I am currently seeking a research internship or full-time position starting in February 2018. Please feel free to contact me regarding opportunities for research collaborations or consulting work.</p>
+                <p class="lead"><b>Contact</b></p> 
+                <p><b>Email:</b> jacob (dot) ritchie (at) mail (dot) utoronto (dot) ca</p>
+                <p><b>Twitter:</b> @jwkritchie</p>
+                <p><b>LinkedIn:</b> jacobritchie1</p>
+            </div>
+        </div>
+      </div>
+      <div class="jumbotron">
+        <h2>Publications</h2>
+            <div class="media-body"><br>
+                <h5> Journal Papers </h5><br>
+                <p><b>Jacob Ritchie</b>, Spiro P. Pantazatos, Leon French, <b>Transcriptomic characterization of MRI contrast with focus on the T1-w/T2-w ratio in the cerebral cortex</b>, NeuroImage, Volume 174, 2018.  <a href="http://www.sciencedirect.com/science/article/pii/S1053811918302374."> Open Access</a>. </p>
+                <br><h5> Poster Presentations </h5><br>
+                <p>Monica Granados, <b> Jacob Ritchie</b>, Constance O'Connor, <b>Guide to Eating Ontario Fishes Mobile App</b>, Up North on Climate Conference, 2018
+                <p><b>Jacob Ritchie</b>, Spiro P. Pantazatos, Leon French, <b>Magnetic Resonance Imaging from the Transcriptomic Perspective</b>, 7th International Workshop on Pattern Recognition in Neuroimaging (PRNI 2017), 2017. </p>
+            </div>
+      </div>
+    </main>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./index_files/jquery-3.2.1.slim.min.js.download" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="index_files/jquery.min.js"><\/script>')</script>
+    <script src="./index_files/popper.min.js.download"></script>
+    <script src="./index_files/bootstrap.min.js.download"></script>
+  
+</body></html>

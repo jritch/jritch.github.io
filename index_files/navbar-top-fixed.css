@@ -1,0 +1,59 @@
+/* Show it is fixed to the top */
+body {
+  min-height: 75rem;
+  padding-top: 2.5rem;
+  background: #9b979173;
+}
+
+
+
+.media-body {
+    margin:10px;
+}
+
+.profile-image {
+    border-radius: 200px;
+    margin: 10px;
+    display: block;
+}
+
+@media screen and (min-width: 770px) {
+    
+    .name-header {
+        padding-left:100px;
+    }
+}
+
+
+@media screen and (min-width: 770px) and (max-width: 990px) {
+
+    .profile-image {
+        width: 300px;
+    }
+}
+
+.jumbotron {
+    padding: 1.75rem;
+}
+
+
+
+@media screen and (max-width: 767px) {
+    .profile-image {
+        width: 80%;
+        margin: 10px auto;
+    }
+    
+    .media-left {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      
+    }
+    
+    
+    .name-header {
+        padding-left:0px;
+        text-align: center;
+    }
+}

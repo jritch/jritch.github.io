@@ -46,8 +46,8 @@ function generateData (data, mapping) {
 		}
 
 		ranges["x"] = [0,100]
-		ranges["y"] = [100,0]
-		ranges["s"] = [4,20]
+		ranges["y"] = [0,100]
+		ranges["s"] = [3,10]
 		ranges["l"] = [255,0]
 		ranges["num_entries"] = [0,num_years]
 

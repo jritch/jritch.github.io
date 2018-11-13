@@ -62,20 +62,21 @@
 
         <div class="col-lg-7 col-md-12" style="white-space: nowrap;" >
           <span style="display: inline-block;height: 100%; vertical-align: middle;"></span>
-          <img class="img-fluid" style="vertical-align:middle; margin:auto;  border-radius:20px" src="graphics1.jpg" alt="">
+          <img class="img-fluid" style="vertical-align:middle; margin:auto;  border-radius:20px" src="clpsych1.png" alt="">
         </div>
 
         <div class="col-lg-5 col-md-12">
 
           <h3 class="my-4"> Shaders and Raytracing</h3>
           
-        <p>In a graduate-level computer graphics course, I learned the fundamentals of the computer graphics pipeline. </p>
+        
+          <p>As part of the 2017 CLPsych Shared Task, I worked to develop an automatic classifier to label forum posts from the ReachOut into 4 urgency levels, to allow moderators to know which posts to prioritize, based on possible risks to the poster. ReachOut is a message board focused on allowing peers to support each other in coping with mental health challenges.</p>
 
-        <p>I created several vertex and fragment shaders  in GLSL as part of a course assignment. My cross-hatching shader was used as the canonical example for the assignment in later sessions of the course.</p>
+          <p>We used a meta-learning tool called TPOT which, given a set of features, automatically generates a machine learning pipeline using genetic algorithm. Using TensorFlow and a pre-trained sentiment model from OpenAI, I extracted high-dimensional vectors representing the sentiment of each forum post. These were used as inputs for TPOT pipeline, as well as manually-chosen features such as time of day, season (which have been established as correlated with suicide risk).</p>
 
-        <p>Along with a partner, I built a C++ raytracer with a variety of features, including environment maps, textures, anti-aliasing, soft shadows, and a octree data structure that drastically improved the raytracer’s runtime. Our raytracer won the award for best course project. </p>
+          <p>Though we did not win the competition, our models were generally competitive, and we achieved the best recall (true positive rate) when separating posts that required moderator action from those that did not.</p>
 
-        <p>These projects built off starter code provided by the course instructor. Environment maps used images from http://paulbourke.net/miscellaneous/cubemaps/.  My partner for the raytracing project was Oliver Straszynski.</p>
+          <p>I worked with Derek Howard, Geoffrey Woollard and Dr. Leon French on this project.</p>
 
         </div>
 
@@ -90,7 +91,7 @@
 
         <div class="col-lg-5 col-md-5 col-sm-12 mb-4">
           <a href="#">
-            <img class="img-fluid" style="border-radius:20px" src="graphics4.jpg" alt="">
+            <img class="img-fluid" style="border-radius:20px" src="clpsych2.png" alt="">
           </a>
         </div>
 

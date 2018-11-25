@@ -42,6 +42,7 @@ function generateData (data, mapping) {
 			if (mapping[entry]) {
 				entry_stats =  data["stats"][mapping[entry]]
 				ranges[mapping[entry]] = [entry_stats["min"],entry_stats["max"]]
+				ranges["population"] = [data["stats"]["population"]["min"] *2 ,data["stats"]["population"]["max"] / 5]
 			}
 		}
 
@@ -57,6 +58,17 @@ function generateData (data, mapping) {
 		random_0 = [Math.random() *  30 + 10, Math.random() *  30 + 10, Math.random() *  30 + 10, Math.random() *  30 + 10]
 		for  (var entry of data["pieces"]) {
 			
+			if (entry.name == "China" || entry.name == "India") {
+					continue;
+			}
+
+
+			if ((entry.states[0].population < data["stats"]["population"]["min"] * 20 ) || (entry.states[entry.states.length -1].population > data["stats"]["population"]["max"] / 5 ) )
+			{
+				continue;
+			}
+
+
 			// The num_entries variable is to check for missing data inside the range
 			num_entries = 0
 
@@ -69,7 +81,7 @@ function generateData (data, mapping) {
 
 			for (var state of entry["states"]) {	
 				// Exclude data outside of the range of years of interest
-				if (!(state.t+0 < year_0 || state.t+0 > year_N)) {
+				if ((state.t+0 == year_0 || state.t+0 == year_N)) {
 					num_entries += 1
 					coeff = 0
 					for (var entry in mapping) {
@@ -90,9 +102,9 @@ function generateData (data, mapping) {
 			}
 
 			// If the data is complete, add it to the data_series
-			if (num_entries == num_years) {
-				data_series.push(data_object)
-			}			
+			//if (num_entries == num_years) {
+			//	data_series.push(data_object)
+			//s}			
 		}
 
 		return data_series;

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Portfolio Item - Interfaces for Programming By Demonstration</title>
+    <title>Interfaces for Programming By Demonstration</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./../index_files/bootstrap.min.css" rel="stylesheet">
@@ -33,6 +33,16 @@
 
       body {
           background-color: #e6ecf0;
+      }
+
+      #img_container {
+        line-height: 400px;
+      }
+
+      @media (max-width: 992px) {
+          #img_container {
+            line-height: 0px;
+          }
       }
     </style>
 
@@ -61,17 +71,19 @@
       <div class="row">
 
         <div class="col-lg-7 col-md-12" style="white-space: nowrap;" >
-          <span style="display: inline-block;height: 100%; vertical-align: middle;"></span>
-          <img class="img-fluid" style="vertical-align:middle; margin:auto;  border-radius:20px" src="replay3.png" alt="">
+           <div id="img_container" style="text-align: center; ">
+           <img  style="width:100%;   vertical-align: middle; border-radius:20px" src="replay3.png" alt=""><br>
+           <img  style="width:80%;  vertical-align: middle; border-radius:20px" src="replay4.gif" alt="">
+          </div>
         </div>
 
         <div class="col-lg-5 col-md-12">
 
           <h3 class="my-4">Design Case Study </h3>
               <p>  Programming by Demonstration (PbD) is a technique whereby end users can program a computer by demonstrating a sequence of operations, rather than writing code in a programming language. As a design exercise in a graduate course on Human-Computer Interaction, myself and my team were tasked with coming up with a speculative user interface design for a PbD system, assuming that we had access to a machine learning program capable of extracting user intent from a sequence of repeated operations.</p>
-              <p>We developed AuRe (Automatic Repeater). It takes the form of a circular red UI element (or recording head) modeled after Facebook’s messenger chat heads and the red recording light used on audio equipment. By clicking on the AuRe, a user can trigger a ‘recording phase’, where they will perform a sequence of GUI operations several times. After the demonstration takes place, users can edit the automatically-generated sequence in a menu view. </p>
+              <p>We developed AuRe (Automatic Repeater). It takes the form of a circular red UI element (or recording head) modeled after Facebook’s messenger chat heads and the red recording light used on audio equipment. By clicking on the AuRe, a user can trigger a ‘recording phase’, where they demonstrate a sequence of GUI operations. After the demonstration takes place, the machine learning algorithm extracts invariant operations, and users can edit the automatically-generated sequence in a menu view before repeating it on a set of targets. </p>
 
-              <p>We validated the effectiveness of the design for expert users with a GOMS analysis, and created a prototype design that we demo-ed (live) to our instructors and peers.</p>
+              <p>We validated the effectiveness of the design for expert users with a GOMS analysis, and created a UI prototype (including a dummy file explorer and PowerPoint application) that we then demonstrated live to our instructors and peers. (The machine learning portion of the system was "faked" for the demo.)</p>
               <p> This work was completed with two other graduate students, John Kanji and Harris Chan</p>
         </div>
 

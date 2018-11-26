@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Portfolio Item - Computer Graphics Projects</title>
+    <title>Capstone Design Project</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./../index_files/bootstrap.min.css" rel="stylesheet">
@@ -35,6 +35,15 @@
       body {
           background-color: #e6ecf0;
       }
+      	.v-center	{
+     		line-height: 400px;
+      	}
+
+      @media (max-width: 992px) {
+          .v-center {
+            line-height: 0px;
+          }
+    }
     </style>
 
   </head>
@@ -45,12 +54,12 @@
     <div class="container" id="container">
 
       <!-- Portfolio Item Heading -->
-      <h1 class="my-4" style="margin-bottom:0!important">Computer Graphics Projects
+      <h1 class="my-4" style="margin-bottom:0!important">Mobile-Controlled Plotter
       </h1>
 
       <div class="row"> 
         <div class="col-lg-9 col-sm-6 ">
-           <h1><small>C++ and GLSL</small></h1>
+           <h1><small>Hardware Prototyping</small></h1>
          </div>
         <div class="col-lg-3 col-sm-6 ">
             <span class="card" style="height: 60px; margin-top: 24px; margin-bottom:24px">
@@ -61,22 +70,29 @@
       <!-- Portfolio Item Row -->
       <div class="row">
 
-        <div class="col-lg-7 col-md-12" style="white-space: nowrap;" >
+        <div class="col-lg-6 col-md-12" style="white-space: nowrap;" >
           <span style="display: inline-block;height: 100%; vertical-align: middle;"></span>
-          <img class="img-fluid" style="vertical-align:middle; margin:auto;  border-radius:20px" src="graphics1.jpg" alt="">
+          <img class="img-fluid" style="vertical-align:middle; margin:auto;  border-radius:20px" src="plotter3.png" alt="">
         </div>
 
-        <div class="col-lg-5 col-md-12">
+        <div class="col-lg-6 col-md-12">
 
-          <h3 class="my-4"> Shaders and Raytracing</h3>
+          <h3 class="my-4">Capstone Design Project</h3>
           
-        <p>In a graduate-level computer graphics course, I learned the fundamentals of the computer graphics pipeline. </p>
+        <p>As part of a 3-month capstone design project, I worked with a team to develop a vector graphics plotter. Plotters were common for large-scale drafting through the 1980s, and there is also <a href=
+        	"https://twitter.com/hashtag/plottertwitter">a thriving community of artists (#plottertwitter) who use them for creative purposes </a>. We wanted to design a system that integrated the affordances of the plotter with modern mobile devices and image processing techniques. </p>
 
-        <p>I created several vertex and fragment shaders  in GLSL as part of a course assignment. My cross-hatching shader was used as the canonical example for the assignment in later sessions of the course.</p>
+	<p>The system comprised three parts: </p>
+		<ul>
+	<li>A front-end Android application that allowed users to take photographs and sketch drawings, as well as manage their library of images.</li>
+	<li>A set of image processing algorithms that converted input images into a series of pen stroke instructions that were then transmitted to the plotter using Bluetooth Low Energy (BLE).</li>
+	<li>A plotter that converted these low-level instructions to a physical drawing. This comprised a custom PCBs (see below) which contained a microcontroller that received BLE instructions and drove a set of stepper motors, as well as the actual physical system that used the motors to control the pen position </li>
+	</ul>
+	<p>I was responsible for construction of the physical system, as well as high-level integration and project planning. Starting from an existing, open-source design for a 3D plotter, I replaced as many parts as possible with alternatives that could be laser-cut or 3D-printed, to maximize the ability of makers to recreate or modify the design using standard tools. This was a great opportunity to learn about CAD tools like Solidworks, and methods for rapid prototyping and fabrication. </p>
+	<p>	This project was an extraordinary amount of fun. Though the device we built was not particularly novel, it was exciting to take on and coordinate a project with so many separate subsystems, and to finally have it work all the way from input image to output drawing.</p>
+	<p>Our team competed in a “Dragon’s Den” style pitch competition with executives from Orbis Access, where we won second place (and a $1000 prize) for our design and associated business model.</p>
+	<p>I completed this project with four other (extremely talented) students, whom I owe a great deal. (Behzad Abghari, Esther Roorda, Alan Daniels and Pak Ki Lam).</p>
 
-        <p>Along with a partner, I built a C++ raytracer with a variety of features, including environment maps, textures, anti-aliasing, soft shadows, and a octree data structure that drastically improved the raytracer’s runtime. Our raytracer won the award for best course project. </p>
-
-        <p>These projects built off starter code provided by the course instructor. Environment maps used images from http://paulbourke.net/miscellaneous/cubemaps/.  My partner for the raytracing project was Oliver Straszynski.</p>
 
         </div>
 
@@ -87,24 +103,23 @@
 
       <div class="row">
 
+   		
 
-
-        <div class="col-lg-5 col-md-5 col-sm-12 mb-4">
-          <a href="#">
-            <img class="img-fluid" style="border-radius:20px" src="graphics4.jpg" alt="">
-          </a>
+        <div class="col-lg-6 col-md-12 col-sm-12 mb-4 v-center" style="text-align: center">
+            <img class="img-fluid" style=" vertical-align:middle; margin:auto;border-radius:20px; text-align: center" src="plotter4.png" alt="">
         </div>
 
-        <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="graphics3.jpg" alt="">
-          </a>
+        <div class="col-lg-3  col-md-6 col-sm-6 mb-4" style="text-align: center">
+    
+            <img class="img-fluid" src="plotter5.png" style="border-radius:20px; margin:auto; " alt="">
+    
         </div>
 
-        <div class="col-lg-3  col-md-6 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="graphics2.jpg" alt="">
-          </a>
+     
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-4 v-center" style="text-align: center">
+    
+            <img class="img-fluid" style=" vertical-align:middle; margin:auto;border-radius:10px; text-align: center" src="plotter2.png" alt="">
+    
         </div>
 
        

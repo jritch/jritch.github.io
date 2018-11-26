@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Portfolio Item - Animated Transitions in Virtual Reality</title>
+    <title>Animated Transitions in Virtual Reality</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./../index_files/bootstrap.min.css" rel="stylesheet">
@@ -33,6 +33,19 @@
 
       body {
           background-color: #e6ecf0;
+      }
+
+      #participant_pic {
+        max-height: 390px;
+      }
+
+      @media (min-width: 992px) {
+        #table_pic  {
+          margin-top: 60px;
+        }
+        #static_gif {
+          margin-top: 50px;
+        }
       }
     </style>
 
@@ -60,12 +73,12 @@
       <!-- Portfolio Item Row -->
       <div class="row">
 
-        <div class="col-lg-7 col-md-12" style="white-space: nowrap;" >
+        <div class="col-lg-5 col-md-12" style="white-space: nowrap; text-align: center" >
           <span style="display: inline-block;height: 100%; vertical-align: middle;"></span>
           <img class="img-fluid" style="vertical-align:middle; margin:auto;  border-radius:20px" src="animated1.gif" alt="">
         </div>
 
-        <div class="col-lg-5 col-md-12">
+        <div class="col-lg-7 col-md-12" style="padding-left:20px ">
 
           <h3 class="my-4">Perceptual InfoVis Study</h3>
           
@@ -77,7 +90,7 @@
 
        <p> I also confirmed the usefulness of animation by showing that it provided higher accuracy compared to a static condition. In the no-animation condition, participants demonstrated large body motions to make up for the lack of external motion queues. </p>
 
-        <p> This project was done alone, with advice from Dr. Sven Dickinson (the course instructor) and Dr. Fanny Chevalier (my M.Sc. supervisor).</p>
+        <p> This project was done alone, with advice from Prof. Sven Dickinson (the course instructor) and Prof. Fanny Chevalier (my M.Sc. Co-Supervisor).</p>
 
 
         </div>
@@ -94,23 +107,25 @@
 
 
 
-        <div class="col-lg-3  col-md-6 col-sm-6 mb-4">
+        <div class="col-lg-5  col-md-12 col-sm-12 mb-4">
           <a href="#">
-            <img class="img-fluid" style="border-radius:20px" src="3dvis3.png" alt="">
+            <img id="static_gif" class="img-fluid" style="border-radius:20px" src="animated3.gif" alt="">
           </a>
         </div>
 
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+
+        <div class="col-lg-4 col-md-12 col-sm-12 mb-4">
           <a href="#">
-            <img class="img-fluid" style="border-radius:20px"  src="animated2.gif" alt="">
+            <img id="table_pic" class="img-fluid" style="border-radius:20px" src="3dvis2.png" alt="">
           </a>
         </div>
 
-        <div class="col-lg-5 col-md-5 col-sm-12 mb-4">
+       <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
           <a href="#">
-            <img class="img-fluid" style="border-radius:20px" src="3dvis2.png" alt="">
+            <img id="participant_pic" class="img-fluid" style="border-radius:20px"  src="animated2.gif" alt="">
           </a>
         </div>
+
 
       </div>
       <!-- /.row -->

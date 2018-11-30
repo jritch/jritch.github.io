@@ -80,6 +80,7 @@
             }
 
             #controls {
+                text-align: center;
                 padding-top: 100px;
                 margin-left: 20px;
                 float:left;
@@ -99,6 +100,7 @@
 
             #controls > select {
                 margin-top: auto;
+
             }
 
             .prettybutton {
@@ -115,8 +117,33 @@
                 vertical-align: middle;
             }
 
+            .button {
+                background-color: #000; /* Green */
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+            }
+
+            .button:active {
+                background-color: #333;
+            }
+
             select {
                 font-size: 30px;
+                text-align: center;
+            }
+
+            input[type=text] {
+                text-align: center;
+                font-size: 30px;
+                width: 60%;
+            }
+            label {
+                font-size: 20px;
             }
 
     </style>
@@ -184,6 +211,27 @@
             <option value="life_expectancy">life_expectancy</option>
             <option value="" selected="selected">random</option>
           </select>
+          
+          <h2>Start Year</h2>
+          <input type="text" id="year_0" value="1950"></input><br>
+          <h2>End Year</h2>
+          <input type="text" id="year_N" value="2016"></input>
+          <br><br>
+          
+          <input id="play" class="button" type="button" value="Play"></input>
+          <input id="reset" class="button" type="button" value="Reset"></input>
+          <br><br>
+          <div style="text-align: left; padding-left: 80px">
+          <label><input type="checkbox" name="checkbox" value="Sub-Saharan Africa">Sub-Saharan Africa</label><br>
+          <label><input type="checkbox" name="checkbox" value="Europe & Central Asia">Europe & Central Asia</label><br>
+          
+          <label><input type="checkbox" name="checkbox" value="East Asia & Pacific">East Asia & Pacific</label><br>
+          <label><input type="checkbox" name="checkbox" value="Middle East & North Africa">Middle East & North Africa</label><br>
+   
+          <label><input type="checkbox" name="checkbox" value="America">America</label><br>
+          <label><input type="checkbox" name="checkbox" value="South Asia">South Asia</label><br>
+          </div>
+
     </div>
     
     
@@ -203,7 +251,30 @@
             showData(data_series)
         }
 
-        $("select").change(update_mapping) 
+        function regenerate() {
+            console.log("AAA")
+            year_0 = $("#year_0").val()-0
+            year_N = $("#year_N").val()-0
+
+            regions = []
+            $("input[type=checkbox]:checked").each( function(key,value) {if (value.defaultValue){regions.push(value.defaultValue)}})
+
+
+            d3.selectAll("svg").remove()
+            data_series = generateData(gapminder,mapping)
+            showData(data_series)
+        }
+
+
+
+        $("#year_0").on("change",regenerate) 
+        $("#year_N").on("change",regenerate) 
+
+        $("#reset").on("touchstart",regenerate) 
+        $("#reset").on("mousedown",regenerate) 
+
+        $("select").on("change",update_mapping)
+        $("input[type=checkbox]").on("change",regenerate)
 
         hide("end")
         hide("overlay")

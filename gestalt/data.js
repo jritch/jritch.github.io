@@ -26,13 +26,14 @@ function convertToRange(number,input_range,output_range) {
 		return (number - input_range[0]) * (output_range[1] - output_range[0])  / (input_range[1] - input_range[0] ) + output_range[0]
 }
 
-var year_0;
-var year_N;
+var year_0 = 1950;
+var year_N = 2016;
 var num_years = (year_N - year_0 + 1)
+var regions = ["Sub-Saharan Africa","Europe & Central Asia","America","South Asia","East Asia & Pacific","Middle East & North Africa"]
 
 function generateData (data, mapping) {
-		year_0 = 1950;
-		year_N = 2016; 
+		//year_0 = 1950;
+		//year_N = 2016; 
 		num_years = (year_N - year_0 + 1);
 
 		// TODO: these ranges are for the entire gapminder dataset, not just the years of interest
@@ -42,13 +43,12 @@ function generateData (data, mapping) {
 			if (mapping[entry]) {
 				entry_stats =  data["stats"][mapping[entry]]
 				ranges[mapping[entry]] = [entry_stats["min"],entry_stats["max"]]
-				ranges["population"] = [data["stats"]["population"]["min"] *2 ,data["stats"]["population"]["max"] / 5]
 			}
 		}
 
 		ranges["x"] = [0,100]
 		ranges["y"] = [0,100]
-		ranges["s"] = [3,10]
+		ranges["s"] = [20,200]
 		ranges["l"] = [255,0]
 		ranges["num_entries"] = [0,num_years]
 
@@ -56,19 +56,13 @@ function generateData (data, mapping) {
 
 		// In the gapminder dataset, one country = one object
 		random_0 = [Math.random() *  30 + 10, Math.random() *  30 + 10, Math.random() *  30 + 10, Math.random() *  30 + 10]
+
 		for  (var entry of data["pieces"]) {
-			
-			if (entry.name == "China" || entry.name == "India") {
-					continue;
-			}
 
-
-			if ((entry.states[0].population < data["stats"]["population"]["min"] * 20 ) || (entry.states[entry.states.length -1].population > data["stats"]["population"]["max"] / 5 ) )
-			{
+			if (regions.indexOf(entry.region) < 0){
 				continue;
 			}
-
-
+			
 			// The num_entries variable is to check for missing data inside the range
 			num_entries = 0
 
@@ -80,7 +74,7 @@ function generateData (data, mapping) {
 			random_1 = [Math.random() * (num_years - random_0[0]), Math.random() * (num_years - random_0[1]), Math.random() * (num_years - random_0[2]), Math.random() * (num_years - random_0[3])]
 
 			for (var state of entry["states"]) {	
-				// Exclude data outside of the range of years of interest
+				// Exclude data outside of the years of interest
 				if ((state.t+0 == year_0 || state.t+0 == year_N)) {
 					num_entries += 1
 					coeff = 0
@@ -102,9 +96,9 @@ function generateData (data, mapping) {
 			}
 
 			// If the data is complete, add it to the data_series
-			//if (num_entries == num_years) {
-			//	data_series.push(data_object)
-			//s}			
+			if (num_entries == 2) {//num_years) {
+				data_series.push(data_object)
+			}			
 		}
 
 		return data_series;
@@ -164,7 +158,7 @@ function showData(data_series) {
                     return yScale(d.y[0]);
                 })
                 .attr("r", function(d){ // Circle's radius
-                    return d.s[0];
+                    return Math.sqrt(d.s[0]);
                 })
                 .attr("fill", function(d) { // circle's luminance
                    return d3.rgb(d.l[0], d.l[0], d.l[0]);
@@ -203,8 +197,7 @@ function showData(data_series) {
                 				.html(mapping["y"])
             // On click, update with new data
 
-		d3.select('body')  
-  			.on('keydown', function() {
+        function play() {
 
   			svg.selectAll("circle").remove()
   			d3.select("#year").html("1950")
@@ -222,19 +215,19 @@ function showData(data_series) {
                     return yScale(d.y[0]);
                 })
                 .attr("r", function(d){ // Circle's radius
-                    return d.s[0];
+                    return Math.sqrt(d.s[0]);
                 })
                 .attr("fill", function(d) { // circle's luminance
                    return d3.rgb(d.l[0], d.l[0], d.l[0]);
                    console.log(d.l[0])
                 });
 
-	  		    for (i=1;i<num_years;i++)
+	  		    for (i=1;i<2;i++)
 	  		    {
 		            last_frame = last_frame
 		                     // Update with new data
 		                    .transition()  // Transition from old to new
-		                    .duration(100)  // Length of animation
+		                    .duration(1000)  // Length of animation
 		                    //.each("start", function() {  // Start animation
 		                    //    d3.select(this)  // 'this' means the current element
 		                            //.attr("fill", "red")  // Change color
@@ -251,7 +244,7 @@ function showData(data_series) {
 		                        return d3.rgb(d.l[i], d.l[i], d.l[i]); // Circle's colour
 		                    })
 		                    .attr("r", function(d) { // Circle's radius
-		                        return d.s[i];
+		                        return Math.sqrt(d.s[i]);
 		                    })
 
 		                    setTimeout(function(){ year.html(year.html() * 1.0 + 1); }, 100 * i);
@@ -260,5 +253,19 @@ function showData(data_series) {
 		                    //year = year.transition.duration(100).attr("font-size", year.attr("font-size" + 1));
 	             }   
 		
-            });
+            }
+
+
+
+
+
+		d3.select('#play')  
+  			.on('mousedown', play);
+
+
+		d3.select('#play')  
+  			.on('touchstart', play);
+
+
+
     }

@@ -36,12 +36,12 @@
       }
 
       #img_container {
-        /*line-height: 400px;*/
+        line-height: 400px;
       }
 
-      @media (min-width: 992px) {
+      @media (max-width: 992px) {
           #img_container {
-           padding-top: 100px;
+            line-height: 0px;
           }
       }
     </style>
@@ -72,19 +72,19 @@
 
         <div class="col-lg-7 col-md-12" style="white-space: nowrap;" >
            <div id="img_container" style="text-align: center; ">
-             <img  style="width:100%; display:block;  margin-left:auto; margin-right: auto; margin-top: 10px; margin-bottom: 20px;  border-radius:10px" src="replay3.png" alt=""><br>
-             <img  style="width:80%;  display:block;  margin-left:auto; margin-right: auto; margin-bottom: 20px; border-radius:10px" src="replay4.gif" alt="">
-           </div>
+           <img  style="width:100%;   vertical-align: middle; border-radius:20px" src="replay3.png" alt=""><br>
+           <img  style="width:80%;  vertical-align: middle; border-radius:20px" src="replay4.gif" alt="">
+          </div>
         </div>
 
         <div class="col-lg-5 col-md-12">
 
           <h3 class="my-4">Design Case Study </h3>
-              <p>  Programming by Demonstration (PbD) is a technique whereby end users can program a computer by demonstrating a sequence of operations, rather than writing code in a programming language. As a design exercise in a graduate course on Human-Computer Interaction, myself and my team were tasked with coming up with a speculative user interface design for a PbD system, assuming that we had access to a machine learning program capable of extracting user intent from a sequence of repeated operations.</p>
+              <p>  Programming by Demonstration (PbD) is a technique whereby end users can program a computer by demonstrating a sequence of operations, rather than writing code in a programming language. As a design exercise in a graduate course on Human-Computer Interaction, my team and I were tasked with coming up with a speculative user interface design for a PbD system, assuming that we had access to a machine learning program capable of extracting user intent from a sequence of repeated operations.</p>
               <p>We developed AuRe (Automatic Repeater). It takes the form of a circular red UI element (or recording head) modeled after Facebook’s messenger chat heads and the red recording light used on audio equipment. By clicking on the AuRe, a user can trigger a ‘recording phase’, where they demonstrate a sequence of GUI operations. After the demonstration takes place, the machine learning algorithm extracts invariant operations, and users can edit the automatically-generated sequence in a menu view before repeating it on a set of targets. </p>
 
-              <p>We validated the effectiveness of the design for expert users with a GOMS analysis, and created a UI prototype (including a dummy file explorer and PowerPoint application) that we then demonstrated live to our instructors and peers. (The machine learning portion of the system was "faked" for the demo.)</p>
-              <p> This work was completed with two other graduate students, John Kanji and Harris Chan</p>
+              <p>We validated the effectiveness of the design for expert users with a GOMS analysis, and created a UI prototype (which worked with "dummy" file explorer and PowerPoint applications) that we then demonstrated live to our instructors and peers. (The machine learning portion of the system was "faked" for the demo.)</p>
+              <p> <b>Contributions: Concept, Implementation, Report Writing.</b> This work was completed with two other graduate students, John Kanji and Harris Chan</p>
         </div>
 
       </div>

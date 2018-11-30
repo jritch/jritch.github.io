@@ -73,13 +73,13 @@
           <h3 class="my-4">Detecting Suicidality from Forum Posts</h3>
           
         
-          <p>As part of the <a href="http://clpsych.org/shared-task-2017/">2017 CLPsych Shared Task</a>, I worked (alongside my lab-mates at <a href="http://computationalneurobiology.github.io">CAMH</a>) to develop an automatic classifier to label forum posts from the ReachOut into 4 urgency levels, to allow moderators to know which posts to prioritize, based on possible risks to the poster. ReachOut is a message board focused on allowing peers to support each other in coping with mental health challenges.</p>
+          <p>As part of the <a href="http://clpsych.org/shared-task-2017/">2017 CLPsych Shared Task</a>, I worked (alongside my lab-mates at <a href="http://computationalneurobiology.github.io">CAMH</a>) to develop an automatic classifier to label forum posts from <a href="http://reachout.com">ReachOut.com</a> into 4 urgency levels, to allow moderators to know which posts to prioritize, based on possible risks to the poster. ReachOut is a message board focused on allowing peers to support each other in coping with mental health challenges.</p>
 
           <p>We used a meta-learning tool called <a href="https://github.com/EpistasisLab/tpot">TPOT</a> which, given a set of features, automatically generates a machine learning pipeline using genetic algorithms. Using TensorFlow and a <a href="https://github.com/openai/generating-reviews-discovering-sentiment">pre-trained sentiment model from OpenAI</a>, I extracted high-dimensional vectors representing the sentiment of each forum post. These were used as inputs for TPOT pipeline, as well as manually-chosen features such as time of day, season (which have been established as correlated with suicide risk).</p>
 
           <p>Though we did not win the competition, our models were generally competitive, and we achieved the best recall (true positive rate) when separating posts that required moderator action from those that did not.</p>
 
-          <p>I worked with Derek Howard, Geoffrey Woollard and Prof. Leon French on this project. Images courtesy of ReachOut and the UPenn Epistasis Lab.</p>
+          <p><b>Contributions: Implementation, Data Analysis, Report Writing.</b> I worked with Derek Howard, Geoffrey Woollard and Prof. Leon French on this project. Images courtesy of ReachOut and the UPenn Epistasis Lab.</p>
 
         </div>
 

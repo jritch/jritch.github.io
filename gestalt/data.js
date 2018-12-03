@@ -29,7 +29,7 @@ function convertToRange(number,input_range,output_range) {
 var year_0 = 1950;
 var year_N = 2016;
 var num_years = (year_N - year_0 + 1)
-var regions = ["Sub-Saharan Africa","Europe & Central Asia","America","South Asia","East Asia & Pacific","Middle East & North Africa"]
+var regions = ["Sub-Saharan Africa","Europe & Central Asia"]
 
 function generateData (data, mapping) {
 		//year_0 = 1950;

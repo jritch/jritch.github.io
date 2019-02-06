@@ -6,60 +6,8 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-<style type="text/css">
+<link rel="stylesheet" type="text/css" href="main.css">
 
-/* Legend Font Style */
-body {
-	font: 11px sans-serif;
-	background-color: #ffffff;
-}
-        
-/* Legend Position Style */
-.legend {
-	position:absolute;
-	left:20px;
-	top:30px;
-}
-
-.axis text {
-	font: 10px sans-serif;
-}
-
-.axis line, .axis path {
-	fill: none;
-	stroke: #000;
-	shape-rendering: crispEdges;
-}
-
-p {
-	font-size: 15pt;
-	font-family: Roboto Mono, sans-serif;
-	font-weight: 2px;
-}
-
-
-input {
-    background-color: #000; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-
-
-input:active {
-	background-color: #333;
-}
-
-select {
-  font-size: 15pt;
-  text-align: center;
-}
-
-</style>
 </head>
 <body>
 <p><b>Visualization of 2016 Presidential Election Results via Common Fate</b></p>
@@ -81,7 +29,7 @@ select {
 <br>
 
 <script type="text/javascript">
-		
+
 //Width and height of map
 var width = 960;
 var height = 500;
@@ -116,7 +64,7 @@ d3.csv("calculations.csv", function(data) {
 	var minVal = d3.min(dataArray)
 	var maxVal = d3.max(dataArray)
 	var ramp = d3.scaleSequential(d3.interpolateRdBu).domain([-100,100])//.range([lowColor,highColor])
-	
+
   // Load GeoJSON data and merge with states data
   d3.json("us-states.json", function(json) {
 
@@ -126,7 +74,7 @@ d3.csv("calculations.csv", function(data) {
       // Grab State Name
       var dataState = data[i].state;
 
-      // Grab data value 
+      // Grab data value
       var dataValue = -1 * data[i].delta;
       var dataFlipped = -1 * data[i].value;
       var dataMargin = data[i]["2016_margin_flip"]
@@ -152,9 +100,6 @@ d3.csv("calculations.csv", function(data) {
       }
     }
 
-
-
-
     // Bind the data to the SVG and create one path per GeoJSON feature
     svg.selectAll("path")
       .data(json.features)
@@ -163,9 +108,13 @@ d3.csv("calculations.csv", function(data) {
       .attr("d", path)
       .style("stroke", "#999")
       .style("stroke-width", "1")
-      .style("fill", function(d) { 
+      .style("fill", function(d) {
+//		    no reason to have a color here
 //      	return ramp(d.properties.value)});
       	return "#ddd"});
+
+
+		// TODO: instead of using fixed circle paths, write a function
 
     var circle_path = d3.select("svg").append("path").attr("d", "M0 0 "+
     "A 10 10, 0, 1, 0, -20 0"+
@@ -184,6 +133,8 @@ d3.csv("calculations.csv", function(data) {
     	function getSum(total, num) {
     	    return total + num;
         }
+
+			//TODO today - replace this centroid code with the data
 
       function centroid(list_of_points)
       {
@@ -206,6 +157,7 @@ d3.csv("calculations.csv", function(data) {
       				avg[1] += list_of_points[i][1] * edge_weights[i]
       		}
 
+
 			if (projection(avg) == null) {
 				console.log("a")
 			}
@@ -215,7 +167,7 @@ d3.csv("calculations.csv", function(data) {
       function centroid_x(list_of_points) {return centroid(list_of_points)[0]}
       function centroid_y(list_of_points) {return centroid(list_of_points)[1]}
 
-      svg.selectAll("circle").data(json.features).enter().append("circle").attr("cx", function (d) {    
+      svg.selectAll("circle").data(json.features).enter().append("circle").attr("cx", function (d) {
       																									if (d.geometry.type == "Polygon")  {
       																										return centroid_x(d.geometry.coordinates[0]);
       																										}
@@ -223,7 +175,7 @@ d3.csv("calculations.csv", function(data) {
       																										return centroid_x(d.geometry.coordinates[0][0]);
       																									}
       																								})
-      																	  .attr("cy", function (d) {    
+      																	  .attr("cy", function (d) {
       																									if (d.geometry.type == "Polygon")  {
       																										return centroid_y(d.geometry.coordinates[0]);
       																									}
@@ -238,7 +190,7 @@ d3.csv("calculations.csv", function(data) {
         .style("stroke", "000")
         .style("stroke-width", "1")
         .attr("class", function(d) {
-          if (d.properties.flipped > 0) {
+          if (d.properties.margin > 0) {
             return "repub"
             // todo - changed repub to flipped
           }
@@ -256,7 +208,6 @@ d3.csv("calculations.csv", function(data) {
                     jitter = jitter * -1
                  }
              },100)
-
 
 
         // from https://bl.ocks.org/mbostock/1705868
@@ -277,7 +228,7 @@ d3.csv("calculations.csv", function(data) {
             else {
               d3.select("#highlight_text").html("Not applicable.")
             }
-            
+
             if (mode == "Color") {
               d3.select("#color_text").html("Initial: 2012 Margin, Final: 2016 Margin (% Republican Votes - % Democrat Votes)")
             }
@@ -292,34 +243,32 @@ d3.csv("calculations.csv", function(data) {
               d3.select("#motion_text").html("States that flipped (Democrat -> Republican) in 2016.")
             }
             else {
-             d3.select("#motion_text").html("Not applicable.") 
+             d3.select("#motion_text").html("Not applicable.")
             }
         }
 
-
-        function play(mode) { 
+        function play(mode) {
           if (mode == "Linear motion") {
           	d3.selectAll("circle")
           	.data(json.features)
-          	//.update()
           	.attr("transform", "")
           	.transition(2000)
           	.attr("transform", "")
           	.transition(1000)
-          	.attr("transform", function(d) {return "translate(" +  
+          	.attr("transform", function(d) {return "translate(" +
           		d.properties.value * 1.5 + ",0)";} )
 
           }
           if (mode == "Circular motion") {
 
-            /*
+
              d3.selectAll("circle.dem").transition()
-              .duration(500)
+              .duration(1000)
               .attrTween("transform", translateAlong(circle_path.node()) )
-            */
+
 
              d3.selectAll("circle.repub").transition()
-              .duration(500)
+              .duration(1000)
               .attrTween("transform", translateAlong(circle_path2.node()) )
 
           }
@@ -335,7 +284,7 @@ d3.csv("calculations.csv", function(data) {
           }
         }
 
-        function reset(mode) { 
+        function reset(mode) {
         	d3.selectAll("circle")
         	.data(json.features)
         	.attr("transform", "")
@@ -355,19 +304,19 @@ d3.csv("calculations.csv", function(data) {
 
           if (mode == "Color") {
           svg.selectAll("circle").data(json.features).style("fill", function(d) {
-              return ramp(d.properties.old_margin);}) 
+              return ramp(d.properties.old_margin);})
           }
-          
+
           else {
               svg.selectAll("circle").data(json.features).style("fill", function(d) {
-              return ramp(d.properties.margin);}) 
+              return ramp(d.properties.margin);})
           }
 
           change_encoding_text(mode);
         }
 
-
       reset(mode)
+
       d3.select("#play")
     	   .on("mousedown", function() {play(mode)})
 			   .on("touchdown", function() {play(mode)})
@@ -375,61 +324,12 @@ d3.csv("calculations.csv", function(data) {
     	d3.select("#reset")
     	    .on("mousedown", function() {reset(mode)})
         	.on("touchdown", function() {reset(mode)})
-      
+
       d3.select("select").on("change", function () {
         mode = d3.select("select")._groups[0][0].value
         reset(mode)
       });
 
-
-
-    
-    	/*
-		// add a legend
-		var w = 140, h = 300;
-
-		var key = d3.select("body")
-			.append("svg")
-			.attr("width", w)
-			.attr("height", h)
-			.attr("class", "legend");
-
-		var legend = key.append("defs")
-			.append("svg:linearGradient")
-			.attr("id", "gradient")
-			.attr("x1", "100%")
-			.attr("y1", "0%")
-			.attr("x2", "100%")
-			.attr("y2", "100%")
-			.attr("spreadMethod", "pad");
-
-		legend.append("stop")
-			.attr("offset", "0%")
-			.attr("stop-color", highColor)
-			.attr("stop-opacity", 1);
-			
-		legend.append("stop")
-			.attr("offset", "100%")
-			.attr("stop-color", lowColor)
-			.attr("stop-opacity", 1);
-
-		key.append("rect")
-			.attr("width", w - 100)
-			.attr("height", h)
-			.style("fill", "url(#gradient)")
-			.attr("transform", "translate(0,10)");
-
-		var y = d3.scaleLinear()
-			.range([h, 0])
-			.domain([minVal, maxVal]);
-
-		var yAxis = d3.axisRight(y);
-
-		key.append("g")
-			.attr("class", "y axis")
-			.attr("transform", "translate(41,10)")
-			.call(yAxis)
-			*/
   });
 });
 </script>

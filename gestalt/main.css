@@ -1,0 +1,133 @@
+/* Format X and Y Axis */
+.axis path,
+.axis line {
+    fill: none;
+    stroke: none;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 0px;
+}
+
+#container {
+    float: left;
+    width: 840px;
+    height: 1000px;
+    position: relative;
+}
+
+#xpcontainer {
+    text-align:center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#overlay {
+    text-align: center;
+    color: white;
+    width: 90%;
+    height: 82%;
+    position: absolute;
+    top: 9%;
+    left: 5%;
+    opacity: 0.7;
+    z-index: 10;
+    background-color: #0c6545;
+    font-size: 240%;
+}
+
+#end {
+    text-align: center;
+    color: white;
+    width: 90%;
+    height: 82%;
+    position: absolute;
+    top: 9%;
+    left: 7%;
+    opacity: 0.7;
+    z-index: 10;
+    background-color: #a86603;
+    font-size: 240%;
+}
+
+#span {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+}
+
+#answer {
+    font-size: 140%;
+}
+
+#controls {
+    text-align: center;
+    padding-top: 100px;
+    margin-left: 20px;
+    float:left;
+}
+
+#controls > h2,select {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: block
+
+}
+
+#controls > h2 {
+    margin-bottom: auto;
+}
+
+#controls > select {
+    margin-top: auto;
+
+}
+
+.prettybutton {
+    text-transform: capitalize;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+
+    background: #0c6545;
+    font: 500 14px/1.35 Roboto Slab,Arial,Helvetica,sans-serif;
+    overflow: visible;
+    width: auto;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.button {
+    background-color: #000; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button:active {
+    background-color: #333;
+}
+
+select {
+    font-size: 30px;
+    text-align: center;
+}
+
+input[type=text] {
+    text-align: center;
+    font-size: 30px;
+    width: 60%;
+}
+label {
+    font-size: 20px;
+}

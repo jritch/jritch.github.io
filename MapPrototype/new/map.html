@@ -5,8 +5,9 @@
 <meta charset="utf-8">
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="main.css">
+<link rel="stylesheet" type="text/css" href="slider.css">
 
 </head>
 <body>
@@ -17,6 +18,12 @@
 <p> One bubble per state.</p>
 <p> <b>Color</b>: <span id="color_text">Change in Voter Turnout From 2012 to 2016 (Purple is decrease)</span> </p>
 <p> <b>Motion</b>: <span id="motion_text">Swing (2016 Margin - 2012 Margin). Rightward motion means more Republican.</span> </p>
+
+<p><b>Color / Grayscale</b>
+<label class="switch">
+  <input type="checkbox" id="grayscale">
+  <span class="slider round"></span>
+</label></p>
 
 
 <input type="button" id="play" value="Play"></input>
@@ -70,8 +77,37 @@ d3.csv("calculations.csv", function(data) {
     return ramp
   }
 
-  ramp = get_ramp(data, "turnout_delta")
-  delta_ramp = get_ramp(data, "delta")
+  var ramp = get_ramp(data, "turnout_delta")
+  var delta_ramp = get_ramp(data, "delta")
+  interp_bw = d3.interpolateLab("black","white")
+  var g_ramp = d3.scaleSequential(interp_bw).domain([ramp.domain()[0] * 0.75,ramp.domain()[1] * 0.75])
+  var g_delta_ramp = d3.scaleSequential(interp_bw).domain([delta_ramp.domain()[0] * 0.75 ,delta_ramp.domain()[1] * 0.75 ])
+
+  function grayscale_ramp(num) {
+
+      if (num > g_ramp.domain()[1]) {
+        return "rgb(255,255,255)"
+      }
+      else if (num < g_ramp.domain()[0]) {
+        return "rgb(0,0,0)"
+      }
+      else {
+        return g_ramp(num)
+      }
+  }
+
+  function grayscale_delta_ramp(num) {
+
+      if (num > g_delta_ramp.domain()[1]) {
+        return "rgb(255,255,255)"
+      }
+      else if (num < g_delta_ramp.domain()[0]) {
+        return "rgb(0,0,0)"
+      }
+      else {
+        return g_delta_ramp(num)
+      }
+  }
 
   // Load GeoJSON data and merge with states data
   d3.json("us-states.json", function(json) {
@@ -178,10 +214,10 @@ d3.csv("calculations.csv", function(data) {
             
             if (mode == "Mode 2")
             {
-                var factor = d.properties.value / 10.0;
+                var factor = d.properties.value / (delta_ramp.domain()[1] * 2) ;
             }
             else {
-                var factor = d.properties.turnout_delta / 5.0;
+                var factor = d.properties.turnout_delta / (ramp.domain()[1] * 2);
             }
 
             var path2;
@@ -213,7 +249,9 @@ d3.csv("calculations.csv", function(data) {
 
                 circ
                 .style("fill", function(d) {
-                    return ramp(0);})
+
+                    col =  $("#grayscale:checked").val() == "on" ? grayscale_delta_ramp : delta_ramp;
+                  return col(0);})
                 .transition()
                 .duration(400)
                 .transition()
@@ -221,7 +259,8 @@ d3.csv("calculations.csv", function(data) {
                 // .attrTween("transform", function (d) {return translateAlong(circle_path.node(), d.properties.value / 50.0, 1) })
                 .attrTween("transform", translateAlong(circle_path.node(), 2, mode) )
                 .style("fill", function(d) {
-                 return delta_ramp(d.properties.value)})
+                 col =  $("#grayscale:checked").val() == "on" ? grayscale_delta_ramp : delta_ramp;
+                  return col(d.properties.value);})
                 .on("end",do_circle)
 
                 svg.append("rect").attr("width", width)
@@ -242,7 +281,9 @@ d3.csv("calculations.csv", function(data) {
 
               circ
               .style("fill", function(d) {
-                  return ramp(0);})
+
+                  col =  $("#grayscale:checked").val() == "on" ? grayscale_ramp : ramp;
+                  return col(0);})
               .transition()
               .duration(400)
               .transition()
@@ -250,7 +291,8 @@ d3.csv("calculations.csv", function(data) {
               // .attrTween("transform", function (d) {return translateAlong(circle_path.node(), d.properties.value / 50.0, 1) })
               .attrTween("transform", translateAlong(circle_path.node(), 2, mode) )
               .style("fill", function(d) {
-               return ramp(d.properties.turnout_delta)})
+               col =  $("#grayscale:checked").val() == "on" ? grayscale_ramp : ramp;
+               return col(d.properties.turnout_delta)})
               .on("end",do_circle)
 
               svg.append("rect").attr("width", width)
@@ -299,8 +341,17 @@ d3.csv("calculations.csv", function(data) {
           }
 
           else {
-              svg.selectAll("circle").data(json.features).style("fill", function(d) {
-              return ramp(0);})
+
+              if ($("#grayscale:checked").val() == "on") {
+                svg.selectAll("circle").data(json.features).style("fill", function(d) {
+                return grayscale_ramp(0);})
+              }
+              else {
+                svg.selectAll("circle").data(json.features).style("fill", function(d) {
+                return ramp(0);})  
+              }
+              
+
           }
 
             change_encoding_text(mode)

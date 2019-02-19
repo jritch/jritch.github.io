@@ -16,15 +16,8 @@
   <option value="Mode 2">Mode 2</option>
 </select></p>
 <p> One bubble per state.</p>
-<p> <b>Color</b>: <span id="color_text">Change in Voter Turnout From 2012 to 2016 (Purple is decrease)</span> </p>
+<p> <b>Size</b>: <span id="color_text">Change in Voter Turnout From 2012 to 2016 (Purple is decrease)</span> </p>
 <p> <b>Motion</b>: <span id="motion_text">Swing (2016 Margin - 2012 Margin). Rightward motion means more Republican.</span> </p>
-
-<p><b>Color / Grayscale</b>
-<label class="switch">
-  <input type="checkbox" id="grayscale">
-  <span class="slider round"></span>
-</label></p>
-
 
 <input type="button" id="play" value="Play"></input>
 <input type="button" id="reset" value="Reset"></input>
@@ -62,7 +55,6 @@ var svg = d3.select("body")
 d3.csv("calculations.csv", function(data) {
 
   
-
   function get_ramp(data, varName)	{
     var dataArray = [];
 
@@ -72,14 +64,18 @@ d3.csv("calculations.csv", function(data) {
   	var minVal = d3.min(dataArray)
   	var maxVal = d3.max(dataArray)
     var absMax= Math.max(Math.abs(minVal),Math.abs(maxVal))
-
-  	var ramp = d3.scaleSequential(d3.interpolatePuOr).domain([-absMax,absMax])
+  	var ramp = d3.scaleSequential(d3.interpolate(2,25)).domain([-absMax,absMax])
     return ramp
   }
 
   var ramp = get_ramp(data, "turnout_delta")
   var delta_ramp = get_ramp(data, "delta")
+
   interp_bw = d3.interpolateLab("black","white")
+
+  var static_ramp = d3.scaleSequential(interp_bw).domain([50,80])
+  var static_margin_ramp = d3.scaleSequential(interp_bw).domain([50,80])
+
   var g_ramp = d3.scaleSequential(interp_bw).domain([ramp.domain()[0] * 0.75,ramp.domain()[1] * 0.75])
   var g_delta_ramp = d3.scaleSequential(interp_bw).domain([delta_ramp.domain()[0] * 0.75 ,delta_ramp.domain()[1] * 0.75 ])
 
@@ -250,16 +246,18 @@ d3.csv("calculations.csv", function(data) {
                 circ
                 .style("fill", function(d) {
 
-                    col =  $("#grayscale:checked").val() == "on" ? grayscale_delta_ramp : delta_ramp;
+                    col =  $("#grayscale:checked").val() == "on" ? grayscale_delta_ramp : grayscale_delta_ramp;
                   return col(0);})
+                .attr("r", function(d) {
+                  return Math.sqrt(ramp(0)) * 2 })
                 .transition()
                 .duration(400)
                 .transition()
                 .duration(2000)
-                // .attrTween("transform", function (d) {return translateAlong(circle_path.node(), d.properties.value / 50.0, 1) })
-                .attrTween("transform", translateAlong(circle_path.node(), 2, mode) )
+                .attr("r", function(d) {
+                  return Math.sqrt(ramp(d.properties.turnout_delta)) * 2 })
                 .style("fill", function(d) {
-                 col =  $("#grayscale:checked").val() == "on" ? grayscale_delta_ramp : delta_ramp;
+                 col =  $("#grayscale:checked").val() == "on" ? grayscale_delta_ramp : grayscale_delta_ramp;
                   return col(d.properties.value);})
                 .on("end",do_circle)
 
@@ -282,16 +280,20 @@ d3.csv("calculations.csv", function(data) {
               circ
               .style("fill", function(d) {
 
-                  col =  $("#grayscale:checked").val() == "on" ? grayscale_ramp : ramp;
+                  col =  $("#grayscale:checked").val() == "on" ? grayscale_ramp : grayscale_ramp;
                   return col(0);})
+              .attr("r", function(d) {
+                  return Math.sqrt(delta_ramp(0)) * 2 })
               .transition()
               .duration(400)
               .transition()
               .duration(2000)
               // .attrTween("transform", function (d) {return translateAlong(circle_path.node(), d.properties.value / 50.0, 1) })
-              .attrTween("transform", translateAlong(circle_path.node(), 2, mode) )
+              .attr("r", function(d) {
+                  return Math.sqrt(delta_ramp(d.properties.value)) * 2 })
+
               .style("fill", function(d) {
-               col =  $("#grayscale:checked").val() == "on" ? grayscale_ramp : ramp;
+               col =  $("#grayscale:checked").val() == "on" ? grayscale_ramp : grayscale_ramp;
                return col(d.properties.turnout_delta)})
               .on("end",do_circle)
 
@@ -308,11 +310,11 @@ d3.csv("calculations.csv", function(data) {
         }
         function change_encoding_text(mode){
             if (mode == "Mode 1") {
-              d3.select("#motion_text").html("Change in Voter Turnout From 2012 to 2016 (Leftward motion means decrease)")
+              d3.select("#motion_text").html("Change in Voter Turnout From 2012 to 2016 (Becoming smaller means decrease)")
               d3.select("#color_text").html("Swing (2016 Margin - 2012 Margin). Purple (or black) means moved to be more Democratic in 2016.")
             }
             else {
-              d3.select("#motion_text").html("Swing (2016 Margin - 2012 Margin). Rightward motion means more Republican.</span> </p>")
+              d3.select("#motion_text").html("Swing (2016 Margin - 2012 Margin). Larger means more Republican.</span> </p>")
               d3.select("#color_text").html("Change in Voter Turnout From 2012 to 2016 (Purple (or black) is decrease)")
             }
         }
@@ -344,11 +346,11 @@ d3.csv("calculations.csv", function(data) {
 
               if ($("#grayscale:checked").val() == "on") {
                 svg.selectAll("circle").data(json.features).style("fill", function(d) {
-                return grayscale_ramp(0);})
+                return grayscale_ramp(0);}).attr("r", function(d) {return Math.sqrt(delta_ramp(0)) * 2})
               }
               else {
                 svg.selectAll("circle").data(json.features).style("fill", function(d) {
-                return ramp(0);})  
+                return ramp(0);}).attr("r", function(d) {return Math.sqrt(delta_ramp(0)) * 2})
               }
               
 

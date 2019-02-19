@@ -16,8 +16,8 @@
   <option value="Mode 2">Mode 2</option>
 </select></p>
 <p> One bubble per state.</p>
-<p> <b>Size</b>: <span id="color_text">Change in Voter Turnout From 2012 to 2016 (Purple is decrease)</span> </p>
-<p> <b>Motion</b>: <span id="motion_text">Swing (2016 Margin - 2012 Margin). Rightward motion means more Republican.</span> </p>
+<p> <b>Color</b>: <span id="color_text">Change in Voter Turnout From 2012 to 2016 (Purple is decrease)</span> </p>
+<p> <b>Size</b>: <span id="motion_text">Swing (2016 Margin - 2012 Margin). Rightward motion means more Republican.</span> </p>
 
 <input type="button" id="play" value="Play"></input>
 <input type="button" id="reset" value="Reset"></input>
@@ -311,11 +311,11 @@ d3.csv("calculations.csv", function(data) {
         function change_encoding_text(mode){
             if (mode == "Mode 1") {
               d3.select("#motion_text").html("Change in Voter Turnout From 2012 to 2016 (Becoming smaller means decrease)")
-              d3.select("#color_text").html("Swing (2016 Margin - 2012 Margin). Purple (or black) means moved to be more Democratic in 2016.")
+              d3.select("#color_text").html("Swing (2016 Margin - 2012 Margin). Black means moved to be more Democratic in 2016.")
             }
             else {
               d3.select("#motion_text").html("Swing (2016 Margin - 2012 Margin). Larger means more Republican.</span> </p>")
-              d3.select("#color_text").html("Change in Voter Turnout From 2012 to 2016 (Purple (or black) is decrease)")
+              d3.select("#color_text").html("Change in Voter Turnout From 2012 to 2016. Black is decrease)")
             }
         }
 
@@ -350,7 +350,7 @@ d3.csv("calculations.csv", function(data) {
               }
               else {
                 svg.selectAll("circle").data(json.features).style("fill", function(d) {
-                return ramp(0);}).attr("r", function(d) {return Math.sqrt(delta_ramp(0)) * 2})
+                return grayscale_ramp(0);}).attr("r", function(d) {return Math.sqrt(delta_ramp(0)) * 2})
               }
               
 

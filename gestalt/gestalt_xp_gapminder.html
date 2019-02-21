@@ -5,7 +5,7 @@
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
     <script src="./data.js" charset="utf-8"></script>
-    <script src="./gapminder.js" charset="utf-8"></script>
+    <script src="./gapminder.augmented.js" charset="utf-8"></script>
     <script xmlns="http://www.w3.org/1999/xhtml" async="" src="https://cdn.rawgit.com/eligrey/Blob.js/0cef2746414269b16834878a8abc52eb9d53e6bd/Blob.js"></script>
     <script xmlns="http://www.w3.org/1999/xhtml" async="" src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
   </head>
@@ -50,6 +50,7 @@
         <h2>X Position</h1>
         <select id="select-x">
             <option value="fertility_rate">fertility_rate</option>
+            <option value="income">income</option>
             <option value="population">population</option>
             <option value="life_expectancy" selected="selected">life_expectancy</option>
             <option value="">random</option>
@@ -57,6 +58,7 @@
           <h2>Y Position</h2>
           <select id="select-y">
             <option value="fertility_rate" selected="selected">fertility_rate</option>
+            <option value="income">income</option>          
             <option value="population">population</option>
             <option value="life_expectancy">life_expectancy</option>
             <option value="">random</option>
@@ -64,6 +66,7 @@
           <h2>Size</h2>
           <select id="select-s">
             <option value="fertility_rate">fertility_rate</option>
+            <option value="income">income</option>
             <option value="population" selected="selected">population</option>
             <option value="life_expectancy">life_expectancy</option>
             <option value="">random</option>
@@ -71,6 +74,7 @@
           <h2>Luminance</h2>
           <select id="select-l">
             <option value="fertility_rate">fertility_rate</option>
+            <option value="income">income</option>
             <option value="population">population</option>
             <option value="life_expectancy">life_expectancy</option>
             <option value="" selected="selected">random</option>

@@ -13,8 +13,8 @@ function remapValue(data_min, data_max, param_max, value) {
 var mapping = {
 				 "x": "life_expectancy",
 				 "y": "fertility_rate",
-				 "s": "population",
-				 "l": ""
+				 "s": "income",
+				 "l": "child_mortality"
 
 				 // currently luminance is mapped to synthetic data
 				 // "l": "",
@@ -26,14 +26,15 @@ function convertToRange(number,input_range,output_range) {
 		return (number - input_range[0]) * (output_range[1] - output_range[0])  / (input_range[1] - input_range[0] ) + output_range[0]
 }
 
-var year_0 = 1950;
-var year_N = 2016;
+var global_timer
+var year_0 = 1960;
+var year_N = 2014;
 var num_years = (year_N - year_0 + 1)
-var regions = ["Sub-Saharan Africa","Europe & Central Asia","America","South Asia","East Asia & Pacific","Middle East & North Africa"]
+var regions = ["Sub-Saharan Africa","Europe & Central Asia"]
 
 function generateData (data, mapping) {
-		//year_0 = 1950;
-		//year_N = 2016; 
+		//year_0 = 1960;
+		//year_N = 2014; 
 		num_years = (year_N - year_0 + 1);
 
 		// TODO: these ranges are for the entire gapminder dataset, not just the years of interest
@@ -50,6 +51,9 @@ function generateData (data, mapping) {
 				}
 			}
 		}
+
+		ranges["child_mortality"] = [0,500]
+		ranges["co2_emissions"] = [0,40]
 
 		ranges["x"] = [0,100]
 		ranges["y"] = [0,100]
@@ -115,7 +119,7 @@ function showData(data_series) {
         // Setup settings for graphic
             var canvas_width = 800;
             var canvas_height = 800;
-            var padding = 30;  // for chart edges
+            var padding = 60;  // for chart edges
 
             // Create scale functions
             var xScale = d3.scale.linear()  // xScale is width of graphic
@@ -192,7 +196,7 @@ function showData(data_series) {
                 .style("fill", "none")
                 .style("stroke-width", 1);
 
-                year=d3.select("#year").html("1950")
+                year=d3.select("#year").html("1960 to 2014")
 
             d3.select("svg").append("text").attr("id","x").attr("x",305)
                 				.attr("y",780).attr("font-size","30")
@@ -205,8 +209,10 @@ function showData(data_series) {
 
         function play() {
 
+
+   			
   			svg.selectAll("circle").remove()
-  			d3.select("#year").html("1950")
+  			d3.select("#year").html(year_0 + " to " + year_N) //.transition(1000).html("2014")
   			year=d3.select("#year")
 
   			last_frame = svg.selectAll("circle")
@@ -233,6 +239,8 @@ function showData(data_series) {
 		            last_frame = last_frame
 		                     // Update with new data
 		                    .transition()  // Transition from old to new
+		                    .duration(250)
+		                    .transition()  // Transition from old to new
 		                    .duration(1000)  // Length of animation
 		                    //.each("start", function() {  // Start animation
 		                    //    d3.select(this)  // 'this' means the current element
@@ -253,11 +261,17 @@ function showData(data_series) {
 		                        return Math.sqrt(d.s[i]);
 		                    })
 
-		                    setTimeout(function(){ year.html(year.html() * 1.0 + 1); }, 100 * i);
+		                    //setTimeout(function(){ year.html(2014); }, 1000);
 
 
 		                    //year = year.transition.duration(100).attr("font-size", year.attr("font-size" + 1));
 	             }   
+
+            svg.append("rect").attr("width", 700).attr("id","curtain")
+            .attr("height", 705).attr("fill","white").attr("x",50).attr("y",50)
+
+            setTimeout(function (){svg.selectAll("#curtain").remove()}, 200)		
+
 		
             }
 
@@ -271,6 +285,11 @@ function showData(data_series) {
 
 		d3.select('#play')  
   			.on('touchstart', play);
+
+  		if (global_timer != undefined){
+  			global_timer.stop()
+  		}
+  		global_timer = d3.interval(play,1400)
 
 
 

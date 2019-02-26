@@ -1,6 +1,7 @@
 body {
 	font: 11px sans-serif;
 	background-color: #ffffff;
+	
 }
 
 .legend {
@@ -43,4 +44,31 @@ input:active {
 select {
   font-size: 15pt;
   text-align: center;
+}
+
+.map_container
+{
+	padding-left: 50px;
+	/*padding-top: 100px;*/
+	/*width: 1000px;*/
+	float: left;
+}
+
+.controls
+{
+	padding-left: 50px;
+	padding-top: 115px;
+	width: 400px;
+	float: left;
+}
+
+textarea
+{
+	border: 1px solid black;
+	width: 90%;
+}
+
+.map
+{
+	border: 1px solid black;
 }

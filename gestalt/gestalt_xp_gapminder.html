@@ -3,6 +3,7 @@
   <head>
     <!-- Load D3 from site -->
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://d3js.org/d3-timer.v1.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
     <script src="./data.js" charset="utf-8"></script>
     <script src="./gapminder.augmented.js" charset="utf-8"></script>
@@ -24,9 +25,7 @@
 
         <h3 id="d3plot"> </h3>
 
-        <div id="pressbar">
-        <p> Press any key to animate.</p>
-        </div>
+        
     </div> <!-- xpcontainer -->
 
     <div id="end">
@@ -51,6 +50,8 @@
         <select id="select-x">
             <option value="fertility_rate">fertility_rate</option>
             <option value="income">income</option>
+            <option value="child_mortality">child_mortality</option>
+            <!--<option value="co2_emissions">co2_emissions</option>-->
             <option value="population">population</option>
             <option value="life_expectancy" selected="selected">life_expectancy</option>
             <option value="">random</option>
@@ -58,7 +59,9 @@
           <h2>Y Position</h2>
           <select id="select-y">
             <option value="fertility_rate" selected="selected">fertility_rate</option>
-            <option value="income">income</option>          
+            <option value="income">income</option>
+            <option value="child_mortality">child_mortality</option>
+            <!--<option value="co2_emissions">co2_emissions</option>-->
             <option value="population">population</option>
             <option value="life_expectancy">life_expectancy</option>
             <option value="">random</option>
@@ -66,8 +69,10 @@
           <h2>Size</h2>
           <select id="select-s">
             <option value="fertility_rate">fertility_rate</option>
-            <option value="income">income</option>
-            <option value="population" selected="selected">population</option>
+            <option value="income" selected="selected">income</option>
+            <option value="child_mortality">child_mortality</option>
+            <!--<option value="co2_emissions">co2_emissions</option>-->
+            <option value="population">population</option>
             <option value="life_expectancy">life_expectancy</option>
             <option value="">random</option>
           </select>
@@ -75,19 +80,19 @@
           <select id="select-l">
             <option value="fertility_rate">fertility_rate</option>
             <option value="income">income</option>
+            <option value="child_mortality" selected="selected">child_mortality</option>
+            <!--<option value="co2_emissions">co2_emissions</option>-->
             <option value="population">population</option>
             <option value="life_expectancy">life_expectancy</option>
-            <option value="" selected="selected">random</option>
+            <option value="" >random</option>
           </select>
 
           <h2>Start Year</h2>
-          <input type="text" id="year_0" value="1950"></input><br>
+          <input type="text" id="year_0" value="1960"></input><br>
           <h2>End Year</h2>
-          <input type="text" id="year_N" value="2016"></input>
+          <input type="text" id="year_N" value="2014"></input>
           <br><br>
 
-          <input id="play" class="button" type="button" value="Play"></input>
-          <input id="reset" class="button" type="button" value="Reset"></input>
           <br><br>
           <div style="text-align: left; padding-left: 80px">
           <label><input type="checkbox" checked=true name="checkbox" value="Sub-Saharan Africa">Sub-Saharan Africa</label><br>

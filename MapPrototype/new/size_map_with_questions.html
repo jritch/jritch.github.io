@@ -26,7 +26,14 @@
 	<h2>What clusters do you see in the visualization?</h2>
 	<textarea rows=10 columns=200></textarea>
 	<br><br>
-	<input id="submit_answer" type="submit">
+	<h2>Which dynamic variable creates the most visible clusters in the visualization?</h2>
+    <div>
+    <select id="select-domininant">
+      <option value="1" selected="selected">Color</option>
+      <option value="2">Size</option>
+    </select>
+    <br></br>
+	<input id="submit_answer" type="submit" value="Advance">
 </div>
 <br>
 
@@ -42,6 +49,8 @@ var lowColor = '#ff0000'
 var highColor = '#ffffff'
 
 var global_timer
+
+
 
 function render_map(center,render_mode) {
 
@@ -338,6 +347,7 @@ function render_map(center,render_mode) {
 	        	.data(json.features)
 	        	.attr("transform", "")
 
+
 	          if (mode == "Highlight")
 	          {
 	            d3.selectAll("circle.repub")
@@ -382,13 +392,7 @@ function render_map(center,render_mode) {
 	    	    .on("mousedown", function() {reset(mode)})
 	        	.on("touchdown", function() {reset(mode)})
 
-	      d3.select("select").on("change", function () {
-	        mode = d3.select("select")._groups[0][0].value
-	        reset(mode);
-	        play(mode);
 
-
-	      });
 	       reset(mode)
 	        play(mode)
 	    });

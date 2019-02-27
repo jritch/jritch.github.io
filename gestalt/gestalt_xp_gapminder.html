@@ -25,7 +25,6 @@
 
         <h3 id="d3plot"> </h3>
 
-        
     </div> <!-- xpcontainer -->
 
     <div id="end">
@@ -104,7 +103,38 @@
           <label><input type="checkbox" name="checkbox" value="America">America</label><br>
           <label><input type="checkbox" name="checkbox" value="South Asia">South Asia</label><br>
           </div>
+    </div>
 
+    <div id="question">
+    <h2>What clusters do you see in the visualization?</h2>
+    <textarea rows=10 columns=200></textarea>
+    <br><br>
+    <h2>Which dynamic variable(s) create the most visible clusters in the visualization?</h2>
+    <div style="border: 1px solid black; text-align: center;">
+    <h2>Dynamic Position</h2>
+    <select id="select-domininant-y">
+      <option value="1" selected="selected">Rank 1</option>
+      <option value="2">Rank 2</option>
+      <option value="3">Rank 3</option>
+    </select>
+    <h2>Dynamic Size</h2>
+     <select id="select-domininant-s">
+      <option value="1" selected="selected">Rank 1</option>
+      <option value="2">Rank 2</option>
+      <option value="3">Rank 3</option>
+    </select>
+    <h2>Dynamic Luminance</h2>
+    <select id="select-domininant-l">
+      <option value="1" selected="selected">Rank 1</option>
+      <option value="2">Rank 2</option>
+      <option value="3">Rank 3</option>
+    </select>
+    <br><br>
+    </div>
+    <h2>Which country is closest in behaviour to the highlighted country?</h2>
+    <h3>SPACEBAR to pause / restart<h3> <h3>CLICK country to select</h3>
+    <br><br>
+    <input id="submit_answer" type="submit" class="button" value="Advance">
     </div>
 
     <script type="text/javascript">
@@ -123,15 +153,61 @@
             showData(data_series)
         }
 
+        tasks = [
+              [{"x": "life_expectancy", "y": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, ["Sub-Saharan Africa", "Europe & Central Asia"], "Turkey"],
+              [{"x": "life_expectancy", "y": "fertility_rate" , "s": "child_mortality", "l": "income"}         , ["East Asia & Pacific", "America"], "Vietnam"],        
+              [{"x": "life_expectancy", "y": "child_mortality", "s": "fertility_rate" , "l": "income"}         , ["South Asia", "America"], "India"],       
+              [{"x": "life_expectancy", "y": "income"         , "s": "fertility_rate" , "l": "child_mortality"}, ["Middle East & North Africa","Europe & Central Asia"], "Oman"],
+              [{"x": "life_expectancy", "y": "income"         , "s": "child_mortality", "l": "fertility_rate"} , ["East Asia & Pacific", "South Asia"], "China"],
+              [{"x": "life_expectancy", "y": "child_mortality", "s": "income"         , "l": "fertility_rate"} , ["East Asia & Pacific","Sub-Saharan Africa"], "Japan"]
+           ]                      
+
+        var advance_timer = d3.timer(function(){})
+
+        function advance(i) {
+          d3.selectAll("svg").remove()
+          highlighted = "dsaf"
+
+          mapping = tasks[i][0]
+          regions = tasks[i][1]
+
+          data_series = generateData(gapminder,mapping)
+          showData(data_series)
+          
+          advance_timer.stop()
+          advance_timer = d3.timer(()=>d3.selectAll("#" + tasks[i][2]).attr("style","stroke:red; stroke-width:2px"));
+
+
+          for (key in tasks[i][0]) {
+            $("#select-" + key).val(tasks[i][0][key])
+            
+          }
+            
+
+          $("input[type=checkbox]").each( function(key,value) {if (regions.indexOf(value.value) > -1) {value.checked = true} else {value.checked = false}})
+      
+          // stop accidental advance when spacebar
+          $('input').blur()
+
+        }
+
+        function pause() {
+          global_timer.stop()
+          d3.selectAll("circle").transition()
+        }
+
+        function restart()  {
+          regenerate()
+        }
+
         function regenerate() {
 
             // TODO: there was a bug while going from year 0 to year N if the process is interrupted
-            year_0 = $("#year_0").val()-0
-            year_N = $("#year_N").val()-0
+            year_0 = $("#year_0").val()
+            year_N = $("#year_N").val()
 
             regions = []
             $("input[type=checkbox]:checked").each( function(key,value) {if (value.defaultValue){regions.push(value.defaultValue)}})
-
 
             d3.selectAll("svg").remove()
             data_series = generateData(gapminder,mapping)
@@ -141,17 +217,39 @@
         $("#year_0").on("change",regenerate)
         $("#year_N").on("change",regenerate)
 
-        $("#reset").on("touchstart",regenerate)
-        $("#reset").on("mousedown",regenerate)
-
-        $("select").on("change",update_mapping)
+        $("#controls > select").on("change",update_mapping)
         $("input[type=checkbox]").on("change",regenerate)
+
+        d3.select("body").on("keypress", function() {
+            if(d3.event.keyCode === 32){
+              if (global_timer._time != "Infinity"){
+                pause();
+              }
+              else {
+                regenerate()
+              }
+            }
+          });
+
 
         hide("end")
         hide("overlay")
 
         data_series = generateData(gapminder,mapping)
         showData(data_series)
+        var trial_i = 0;
+
+        $("#submit_answer").on("click", function () {
+          trial_i += 1
+          if (trial_i < 6) {
+            advance(trial_i)
+          }
+          else {
+            show("end")
+            pause()
+          }
+        });
+        advance(0)
 
 
   </script>

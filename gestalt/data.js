@@ -26,6 +26,7 @@ function convertToRange(number,input_range,output_range) {
 		return (number - input_range[0]) * (output_range[1] - output_range[0])  / (input_range[1] - input_range[0] ) + output_range[0]
 }
 
+var highlighted = "null"
 var global_timer
 var year_0 = 1960;
 var year_N = 2014;
@@ -77,7 +78,7 @@ function generateData (data, mapping) {
 
 			// Each object will have a series of values for each visual variable
 			// for each year in the range
-			data_object = {"x":[],"y":[],"l":[],"s":[]};
+			data_object = {"x":[],"y":[],"l":[],"s":[], "name": entry.name};
 			
 			
 			random_1 = [Math.random() * (num_years - random_0[0]), Math.random() * (num_years - random_0[1]), Math.random() * (num_years - random_0[2]), Math.random() * (num_years - random_0[3])]
@@ -160,7 +161,6 @@ function showData(data_series) {
                 .data(data_series)
                 .enter()
                 .append("circle")  // Add circle svg
-                .style("stroke", "black")
                 .attr("cx", function(d) {
                      return xScale(d.x[0]);  // Circle's X
                 })
@@ -219,7 +219,6 @@ function showData(data_series) {
                 .data(data_series)
                 .enter()
                 .append("circle")  // Add circle svg
-                .style("stroke", "black")
                 .attr("cx", function(d) {
                      return xScale(d.x[0]);  // Circle's X
                 })
@@ -232,7 +231,10 @@ function showData(data_series) {
                 .attr("fill", function(d) { // circle's luminance
                    return d3.rgb(d.l[0], d.l[0], d.l[0]);
                    console.log(d.l[0])
-                });
+                })
+                .attr("id", function(d) { // Circle's radius
+		           return d.name.replace(/\s/g, '');
+		        });
 
 	  		    for (i=1;i<2;i++)
 	  		    {
@@ -260,6 +262,7 @@ function showData(data_series) {
 		                    .attr("r", function(d) { // Circle's radius
 		                        return Math.sqrt(d.s[i]);
 		                    })
+		                    
 
 		                    //setTimeout(function(){ year.html(2014); }, 1000);
 
@@ -271,6 +274,16 @@ function showData(data_series) {
             .attr("height", 705).attr("fill","white").attr("x",50).attr("y",50)
 
             setTimeout(function (){svg.selectAll("#curtain").remove()}, 200)		
+
+
+              $("#" + highlighted).addClass("highlight")
+
+	          $("circle").on("click", function () {
+	          		$("circle").removeClass("highlight")
+	          		$(this).addClass('highlight')
+	          		highlighted = $(this).attr("id")
+	          })
+
 
 		
             }
@@ -289,7 +302,8 @@ function showData(data_series) {
   		if (global_timer != undefined){
   			global_timer.stop()
   		}
-  		global_timer = d3.interval(play,1400)
+  		play()
+  		global_timer = d3.interval(play,1300)
 
 
 

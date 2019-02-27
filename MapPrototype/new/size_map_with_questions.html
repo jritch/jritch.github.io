@@ -291,7 +291,7 @@ function render_map(center,render_mode) {
 	            
 
 	            function do_circle() {
-
+	            
 	              circ
 	              .style("fill", function(d) {
 
@@ -430,12 +430,13 @@ $("#submit_answer").click( function () {
 	
 
 	if (q <= 4) {
-		answers.push($("textarea").val())
+		answers.push([$("textarea").val(), $("#select-domininant").val()])
 		question = questions.pop()
 		$("#progress").html("<b>Progress: "+q+"/4 Questions</b>")
 		render_map(question[0],question[1])
 	}
 	else {
+		answers.push([$("textarea").val(), $("#select-domininant").val()])
 		$("body").html("<h1>Experiment Complete</h1>")
 		
 	}

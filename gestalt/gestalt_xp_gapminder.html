@@ -112,7 +112,7 @@
     <h2>Which dynamic variable(s) create the most visible clusters in the visualization?</h2>
     <div style="border: 1px solid black; text-align: center;">
     <h2>Dynamic Position</h2>
-    <select id="select-domininant-y">
+    <select id="select-domininant-x">
       <option value="1" selected="selected">Rank 1</option>
       <option value="2">Rank 2</option>
       <option value="3">Rank 3</option>
@@ -154,19 +154,19 @@
         }
 
         tasks = [
-              [{"x": "life_expectancy", "y": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, ["Sub-Saharan Africa", "Europe & Central Asia"], "Turkey"],
-              [{"x": "life_expectancy", "y": "fertility_rate" , "s": "child_mortality", "l": "income"}         , ["East Asia & Pacific", "America"], "Vietnam"],        
-              [{"x": "life_expectancy", "y": "child_mortality", "s": "fertility_rate" , "l": "income"}         , ["South Asia", "America"], "India"],       
-              [{"x": "life_expectancy", "y": "income"         , "s": "fertility_rate" , "l": "child_mortality"}, ["Middle East & North Africa","Europe & Central Asia"], "Oman"],
-              [{"x": "life_expectancy", "y": "income"         , "s": "child_mortality", "l": "fertility_rate"} , ["East Asia & Pacific", "South Asia"], "China"],
-              [{"x": "life_expectancy", "y": "child_mortality", "s": "income"         , "l": "fertility_rate"} , ["East Asia & Pacific","Sub-Saharan Africa"], "Japan"]
+              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, ["Sub-Saharan Africa", "Europe & Central Asia"], "Turkey"],
+              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "child_mortality", "l": "income"}         , ["East Asia & Pacific", "America"], "Vietnam"],        
+              [{"y": "life_expectancy", "x": "child_mortality", "s": "fertility_rate" , "l": "income"}         , ["South Asia", "America"], "India"],       
+              [{"y": "life_expectancy", "x": "income"         , "s": "fertility_rate" , "l": "child_mortality"}, ["Middle East & North Africa","Europe & Central Asia"], "Oman"],
+              [{"y": "life_expectancy", "x": "income"         , "s": "child_mortality", "l": "fertility_rate"} , ["East Asia & Pacific", "South Asia"], "China"],
+              [{"y": "life_expectancy", "x": "child_mortality", "s": "income"         , "l": "fertility_rate"} , ["East Asia & Pacific","Sub-Saharan Africa"], "Japan"]
            ]                      
 
         var advance_timer = d3.timer(function(){})
 
         function advance(i) {
           d3.selectAll("svg").remove()
-          highlighted = "dsaf"
+          highlighted = "null"
 
           mapping = tasks[i][0]
           regions = tasks[i][1]
@@ -239,14 +239,30 @@
         showData(data_series)
         var trial_i = 0;
 
+        answers = []
+
+        function add_answer() {
+
+            answer = {}
+            answer["text"] = $("textarea").val()
+            answer["ranks"] = [$("#select-domininant-x").val(), $("#select-domininant-s").val(), $("#select-domininant-l").val() ]
+            answer["closest"] = highlighted
+            answers.push(answer)
+
+        }
+
         $("#submit_answer").on("click", function () {
           trial_i += 1
           if (trial_i < 6) {
+            add_answer()
             advance(trial_i)
           }
-          else {
+
+          else if (trial_i == 6){
+            add_answer()
             show("end")
             pause()
+            localStorage["answers"] = JSON.stringify(answers)
           }
         });
         advance(0)

@@ -48,7 +48,7 @@ function generateData (data, mapping) {
 					ranges[mapping[entry]] = [entry_stats["min"],entry_stats["max"]]
 				}
 				else {
-					ranges[mapping[entry]] = [0,100000]
+					ranges[mapping[entry]] = [0,125000]
 				}
 			}
 		}
@@ -59,7 +59,7 @@ function generateData (data, mapping) {
 		ranges["x"] = [0,100]
 		ranges["y"] = [0,100]
 		ranges["s"] = [20,200]
-		ranges["l"] = [255,0]
+		ranges["l"] = [100,255]
 		ranges["num_entries"] = [0,num_years]
 
 		data_series = []

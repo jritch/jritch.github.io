@@ -13,7 +13,7 @@
 
 #container {
     float: left;
-    width: 840px;
+    width: 640px;
     height: 1000px;
     position: relative;
 }
@@ -67,8 +67,8 @@
 
 #controls {
     text-align: center;
-    padding-top: 100px;
-    margin-left: 20px;
+    /*padding-top: 100px;*/
+    margin-left: 5px;
     float:left;
 }
 
@@ -84,23 +84,13 @@
     margin-bottom: auto;
 }
 
+h2 {
+    font-size: 15px;
+}
+
 #controls > select {
     margin-top: auto;
 
-}
-
-.prettybutton {
-    text-transform: capitalize;
-    font-weight: bold;
-    text-align: center;
-    color: #fff;
-
-    background: #0c6545;
-    font: 500 14px/1.35 Roboto Slab,Arial,Helvetica,sans-serif;
-    overflow: visible;
-    width: auto;
-    cursor: pointer;
-    vertical-align: middle;
 }
 
 .button {
@@ -119,26 +109,17 @@
 }
 
 select {
-    font-size: 30px;
+    font-size: 15px;
     text-align: center;
 }
 
 input[type=text] {
     text-align: center;
-    font-size: 30px;
+    font-size: 15px;
     width: 60%;
 }
 label {
-    font-size: 20px;
-}
-
-
-#question
-{
-    padding-left: 50px;
-    padding-top: 115px;
-    width: 400px;
-    float: left;
+    font-size: 15px;
 }
 
 

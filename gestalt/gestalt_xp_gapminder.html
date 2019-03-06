@@ -18,11 +18,8 @@
 
   <div id="container">
     <div id="xpcontainer">
-        <h1 id="title_instructions"> Perception Experiment (Gapminder Data) </h1>
-
-        <!--<h2 id="indicator_progress" text-align="center"> Progress: 1 / 54 trials</h2>-->
+        
         <h1 id="year"> </h3>
-
         <h3 id="d3plot"> </h3>
 
     </div> <!-- xpcontainer -->
@@ -45,6 +42,9 @@
     </div>
 
     <div id="controls">
+        <input id="toggle_q" type="button"  value="DEBUG: toggle questions">
+        <br></br>
+        <input id="toggle_p" type="button"  value="DEBUG: toggle paused">
         <h2>X Position</h1>
         <select id="select-x">
             <option value="fertility_rate">fertility_rate</option>
@@ -86,56 +86,80 @@
             <option value="" >random</option>
           </select>
 
-          <h2>Start Year</h2>
-          <input type="text" id="year_0" value="1960"></input><br>
-          <h2>End Year</h2>
-          <input type="text" id="year_N" value="2014"></input>
-          <br><br>
+          <div style="display: none">
+            <h2>Start Year</h2>
+              <input type="text" id="year_0" value="1960"></input><br>
+              <h2>End Year</h2>
+              <input type="text" id="year_N" value="2014"></input>
+              <br><br>
 
-          <br><br>
-          <div style="text-align: left; padding-left: 80px">
-          <label><input type="checkbox" checked=true name="checkbox" value="Sub-Saharan Africa">Sub-Saharan Africa</label><br>
-          <label><input type="checkbox" checked=true name="checkbox" value="Europe & Central Asia">Europe & Central Asia</label><br>
+              <br><br>
+              <div style="text-align: left; padding-left: 80px">
+              <label><input type="checkbox" checked=true name="checkbox" value="Sub-Saharan Africa">Sub-Saharan Africa</label><br>
+              <label><input type="checkbox" checked=true name="checkbox" value="Europe & Central Asia">Europe & Central Asia</label><br>
 
-          <label><input type="checkbox" name="checkbox" value="East Asia & Pacific">East Asia & Pacific</label><br>
-          <label><input type="checkbox" name="checkbox" value="Middle East & North Africa">Middle East & North Africa</label><br>
+              <label><input type="checkbox" name="checkbox" value="East Asia & Pacific">East Asia & Pacific</label><br>
+              <label><input type="checkbox" name="checkbox" value="Middle East & North Africa">Middle East & North Africa</label><br>
 
-          <label><input type="checkbox" name="checkbox" value="America">America</label><br>
-          <label><input type="checkbox" name="checkbox" value="South Asia">South Asia</label><br>
+              <label><input type="checkbox" name="checkbox" value="America">America</label><br>
+              <label><input type="checkbox" name="checkbox" value="South Asia">South Asia</label><br>
+            </div>
+
+
+
           </div>
+
+          <div id="question">
+            
+            <div id="q1">
+              <h2>What clusters do you see in the visualization?</h2>
+              <textarea rows=10 columns=200></textarea>
+              <br><br>
+            </div>
+
+            <div id="q2">
+
+              <h2>Which dynamic variable(s) create the most visible clusters in the visualization?</h2>
+              <div style="border: 1px solid black; text-align: center;">
+              <h2>Dynamic Position</h2>
+              <select id="select-domininant-x">
+                <option value="1" selected="selected">Rank 1</option>
+                <option value="2">Rank 2</option>
+                <option value="3">Rank 3</option>
+              </select>
+              <h2>Dynamic Size</h2>
+               <select id="select-domininant-s">
+                <option value="1" selected="selected">Rank 1</option>
+                <option value="2">Rank 2</option>
+                <option value="3">Rank 3</option>
+              </select>
+              <h2>Dynamic Luminance</h2>
+              <select id="select-domininant-l">
+                <option value="1" selected="selected">Rank 1</option>
+                <option value="2">Rank 2</option>
+                <option value="3">Rank 3</option>
+              </select>
+              <br></br>
+              </div>
+              
+              <h2>Briefly explain your answer.</h2>
+              <textarea rows=5 columns=10></textarea>
+              <br><br>
+            </div>
+            <div id="q3">
+              <h2>Which country is closest in behaviour to the highlighted country?</h2>
+              <h3>ENTER to pause / restart</h3> <h3>CLICK country to select</h3>
+              <h2>Briefly explain your answer.</h2>
+              <textarea rows=5 columns=10></textarea>
+              <br><br>
+            </div>
+            <input id="submit_answer" type="submit" class="button" value="Advance">
+          </div>
+
+
     </div>
 
-    <div id="question">
-    <h2>What clusters do you see in the visualization?</h2>
-    <textarea rows=10 columns=200></textarea>
-    <br><br>
-    <h2>Which dynamic variable(s) create the most visible clusters in the visualization?</h2>
-    <div style="border: 1px solid black; text-align: center;">
-    <h2>Dynamic Position</h2>
-    <select id="select-domininant-x">
-      <option value="1" selected="selected">Rank 1</option>
-      <option value="2">Rank 2</option>
-      <option value="3">Rank 3</option>
-    </select>
-    <h2>Dynamic Size</h2>
-     <select id="select-domininant-s">
-      <option value="1" selected="selected">Rank 1</option>
-      <option value="2">Rank 2</option>
-      <option value="3">Rank 3</option>
-    </select>
-    <h2>Dynamic Luminance</h2>
-    <select id="select-domininant-l">
-      <option value="1" selected="selected">Rank 1</option>
-      <option value="2">Rank 2</option>
-      <option value="3">Rank 3</option>
-    </select>
-    <br><br>
-    </div>
-    <h2>Which country is closest in behaviour to the highlighted country?</h2>
-    <h3>SPACEBAR to pause / restart<h3> <h3>CLICK country to select</h3>
-    <br><br>
-    <input id="submit_answer" type="submit" class="button" value="Advance">
-    </div>
+    
 
     <script type="text/javascript">
         function hide(idelement) {
@@ -164,12 +188,13 @@
 
         var advance_timer = d3.timer(function(){})
 
+
         function advance(i) {
           d3.selectAll("svg").remove()
           highlighted = "null"
 
           mapping = tasks[i][0]
-          regions = tasks[i][1]
+          regions = ["Sub-Saharan Africa","Europe & Central Asia","East Asia & Pacific", "South Asia","Middle East & North Africa","America"]
 
           data_series = generateData(gapminder,mapping)
           showData(data_series)
@@ -206,8 +231,8 @@
             year_0 = $("#year_0").val()
             year_N = $("#year_N").val()
 
-            regions = []
-            $("input[type=checkbox]:checked").each( function(key,value) {if (value.defaultValue){regions.push(value.defaultValue)}})
+            // regions = []
+            // $("input[type=checkbox]:checked").each( function(key,value) {if (value.defaultValue){regions.push(value.defaultValue)}})
 
             d3.selectAll("svg").remove()
             data_series = generateData(gapminder,mapping)
@@ -221,7 +246,7 @@
         $("input[type=checkbox]").on("change",regenerate)
 
         d3.select("body").on("keypress", function() {
-            if(d3.event.keyCode === 32){
+            if(d3.event.keyCode === 13){
               if (global_timer._time != "Infinity"){
                 pause();
               }
@@ -265,6 +290,35 @@
             localStorage["answers"] = JSON.stringify(answers)
           }
         });
+
+        var question = ""
+        question_i = 0 
+        $("#toggle_q").on("click", function () {
+                  question_vars = ["q1","q2","q3"];
+                  
+                  for (i=0;i<3;i++) {
+                    if ((question_i % 3) == i) {
+                      $("#" + question_vars[i]).attr("style","display:block")
+                    }
+                    else {
+                      $("#" + question_vars[i]).attr("style","display:none") 
+                    }
+                  }
+
+                  question_i += 1;
+
+                });
+
+        var paused = ""
+        paused_i = 0 
+        $("#toggle_p").on("click", function () {
+                  paused_vars = ["","position","fill","r"]
+                  paused_i += 1
+                  paused = paused_vars[paused_i % 4]
+                });
+
+
+
         advance(0)
 
 

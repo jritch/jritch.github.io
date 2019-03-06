@@ -48,16 +48,14 @@ select {
 
 .map_container
 {
-	padding-left: 50px;
-	/*padding-top: 100px;*/
-	/*width: 1000px;*/
+	padding-left: 10px;
 	float: left;
 }
 
 .controls
 {
-	padding-left: 50px;
-	padding-top: 115px;
+	padding-left: 10px;
+	padding-top: 80px;
 	width: 400px;
 	float: left;
 }

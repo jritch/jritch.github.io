@@ -8,249 +8,258 @@
     <script src="./data.js" charset="utf-8"></script>
     <script src="./gapminder.augmented.js" charset="utf-8"></script>
     <script xmlns="http://www.w3.org/1999/xhtml" async="" src="https://cdn.rawgit.com/eligrey/Blob.js/0cef2746414269b16834878a8abc52eb9d53e6bd/Blob.js"></script>
-    <script xmlns="http://www.w3.org/1999/xhtml" async="" src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
+    <script xmlns="http://www.w3.org/1999/xhtml" async="" src="https://cdn.rawgit.com/eligrey/FileSaver.jse9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
   </head>
 
 
   <link rel="stylesheet" type="text/css" href="main.css">
 
+
   <body id="thebody">
 
-  <div id="container">
-    <div id="xpcontainer">
-        
-        <h1 id="year"> </h3>
+    <div id="container">
+
+      <div id="xpcontainer">
+        <h1 id="year">Quality of Life from 1960 to 2014</h1>
         <h3 id="d3plot"> </h3>
+      </div>
 
-    </div> <!-- xpcontainer -->
-
-    <div id="end">
+      <div id="end">
         <div id="span">
-            <p> Congratulations! The experiment is over. </p>
-            <br /> <br /> <br /> <br />
-            <p>Please call the experimenter. </p>
+          <p> Congratulations! The experiment is over. </p>
+          <br /> <br /> <br /> <br />
+          <p>Please call the experimenter. </p>
         </div>
-    </div>
+      </div>
 
-    <div id="overlay">
+      <div id="overlay">
         <div id="span">
-            <p> Note that you can take a break between trials </p>
-            <br /> <br /> <br /> <br />
-            <p>Press &lt;Enter&gt; to continue </p>
+          <p> Note that you can take a break between trials </p>
+          <br /> <br /> <br /> <br />
+          <p>Press &lt;Enter&gt; to continue </p>
         </div>
-    </div>
-    </div>
-
-    <div id="controls">
-        <input id="toggle_q" type="button"  value="DEBUG: toggle questions">
-        <br></br>
-        <input id="toggle_p" type="button"  value="DEBUG: toggle paused">
-        <h2>X Position</h1>
-        <select id="select-x">
-            <option value="fertility_rate">fertility_rate</option>
-            <option value="income">income</option>
-            <option value="child_mortality">child_mortality</option>
-            <!--<option value="co2_emissions">co2_emissions</option>-->
-            <option value="population">population</option>
-            <option value="life_expectancy" selected="selected">life_expectancy</option>
-            <option value="">random</option>
-          </select>
-          <h2>Y Position</h2>
-          <select id="select-y">
-            <option value="fertility_rate" selected="selected">fertility_rate</option>
-            <option value="income">income</option>
-            <option value="child_mortality">child_mortality</option>
-            <!--<option value="co2_emissions">co2_emissions</option>-->
-            <option value="population">population</option>
-            <option value="life_expectancy">life_expectancy</option>
-            <option value="">random</option>
-          </select>
-          <h2>Size</h2>
-          <select id="select-s">
-            <option value="fertility_rate">fertility_rate</option>
-            <option value="income" selected="selected">income</option>
-            <option value="child_mortality">child_mortality</option>
-            <!--<option value="co2_emissions">co2_emissions</option>-->
-            <option value="population">population</option>
-            <option value="life_expectancy">life_expectancy</option>
-            <option value="">random</option>
-          </select>
-          <h2>Luminance</h2>
-          <select id="select-l">
-            <option value="fertility_rate">fertility_rate</option>
-            <option value="income">income</option>
-            <option value="child_mortality" selected="selected">child_mortality</option>
-            <!--<option value="co2_emissions">co2_emissions</option>-->
-            <option value="population">population</option>
-            <option value="life_expectancy">life_expectancy</option>
-            <option value="" >random</option>
-          </select>
-
-          <div style="display: none">
-            <h2>Start Year</h2>
-              <input type="text" id="year_0" value="1960"></input><br>
-              <h2>End Year</h2>
-              <input type="text" id="year_N" value="2014"></input>
-              <br><br>
-
-              <br><br>
-              <div style="text-align: left; padding-left: 80px">
-              <label><input type="checkbox" checked=true name="checkbox" value="Sub-Saharan Africa">Sub-Saharan Africa</label><br>
-              <label><input type="checkbox" checked=true name="checkbox" value="Europe & Central Asia">Europe & Central Asia</label><br>
-
-              <label><input type="checkbox" name="checkbox" value="East Asia & Pacific">East Asia & Pacific</label><br>
-              <label><input type="checkbox" name="checkbox" value="Middle East & North Africa">Middle East & North Africa</label><br>
-
-              <label><input type="checkbox" name="checkbox" value="America">America</label><br>
-              <label><input type="checkbox" name="checkbox" value="South Asia">South Asia</label><br>
-            </div>
-
-
-
-          </div>
-
-          <div id="question">
-            
-            <div id="q1">
-              <h2>What clusters do you see in the visualization?</h2>
-              <textarea rows=10 columns=200></textarea>
-              <br><br>
-            </div>
-
-            <div id="q2">
-
-              <h2>Which dynamic variable(s) create the most visible clusters in the visualization?</h2>
-              <div style="border: 1px solid black; text-align: center;">
-              <h2>Dynamic Position</h2>
-              <select id="select-domininant-x">
-                <option value="1" selected="selected">Rank 1</option>
-                <option value="2">Rank 2</option>
-                <option value="3">Rank 3</option>
-              </select>
-              <h2>Dynamic Size</h2>
-               <select id="select-domininant-s">
-                <option value="1" selected="selected">Rank 1</option>
-                <option value="2">Rank 2</option>
-                <option value="3">Rank 3</option>
-              </select>
-              <h2>Dynamic Luminance</h2>
-              <select id="select-domininant-l">
-                <option value="1" selected="selected">Rank 1</option>
-                <option value="2">Rank 2</option>
-                <option value="3">Rank 3</option>
-              </select>
-              <br></br>
-              </div>
-              
-              <h2>Briefly explain your answer.</h2>
-              <textarea rows=5 columns=10></textarea>
-              <br><br>
-            </div>
-            <div id="q3">
-              <h2>Which country is closest in behaviour to the highlighted country?</h2>
-              <h3>ENTER to pause / restart</h3> <h3>CLICK country to select</h3>
-              <h2>Briefly explain your answer.</h2>
-              <textarea rows=5 columns=10></textarea>
-              <br><br>
-            </div>
-            <input id="submit_answer" type="submit" class="button" value="Advance">
-          </div>
-
+      </div>
 
     </div>
 
     
 
-    <script type="text/javascript">
+    <div id="controls">
+      <input id="replay" type="submit" class="button" value="Replay">
+      <br><br>
+      <div style="border:1px solid black">
+      <p>
+        <b> X Position: </b>
+        <span id="select-x"></span>
+     </p>
+      
+      <p>
+        <b>Y Position: </b>
+        <span id="select-y"></span>
+      </p>
+      
+      <p>
+        <b>Size: </b>
+        <span id="select-s"></span>
+      </p>
+      
+      <p>
+        <b>Luminance: </b>
+        <span id="select-l"></span>
+      </p>
+      </div>
+      <div id="question">
+        
+        <div id="q1">
+          <h2>What patterns do you see in the visualization?</h2>
+          <textarea rows=10 columns=200></textarea>
+          <br><br>
+        </div>
+
+        <div id="q3">
+          <h2>Which dynamic variable(s) create the most visible patterns in the visualization?</h2>
+          <div style="border: 1px solid black; text-align: center;">
+
+          <!-- Adapted from: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio -->
+          <form>
+            <h2>Points changing in position</h2>
+            <div>
+              <input type="radio" id="DPChoice1"
+               name="DP" value="1">
+              <label for="DPChoice1">Rank 1 (Strongest)</label>
+
+              <input type="radio" id="DPChoice2"
+               name="DP" value="2">
+              <label for="DPChoice2">Rank 2</label>
+
+              <input type="radio" id="DPChoice3"
+               name="DP" value="3">
+              <label for="DPChoice3">Rank 3 (Weakest)</label>
+              
+            </div>
+          </form>
+
+          <form>
+            <h2>Points changing in size</h2>
+            <div>
+              <input type="radio" id="DSChoice1"
+               name="DS" value="1">
+              <label for="DSChoice1">Rank 1 (Strongest)</label>
+
+              <input type="radio" id="DSChoice2"
+               name="DS" value="2">
+              <label for="DSChoice2">Rank 2</label>
+
+              <input type="radio" id="DSChoice3"
+               name="DS" value="3">
+              <label for="DSChoice3">Rank 3 (Weakest)</label>              
+            </div>
+          </form>
+
+          <form>
+            <h2>Points changing in brightness</h2>
+            <div>
+              <input type="radio" id="DLChoice1"
+               name="DL" value="1">
+              <label for="DLChoice1">Rank 1 (Strongest)</label>
+
+              <input type="radio" id="DLChoice2"
+               name="DL" value="2">
+              <label for="DLChoice2">Rank 2</label>
+
+              <input type="radio" id="DLChoice3"
+               name="DL" value="3">
+              <label for="DLChoice3">Rank 3 (Weakest)</label>
+              
+            </div>
+          </form>          
+            
+            <br></br>
+          </div>
+          
+          <h2>Briefly explain why you chose this ranking.</h2>
+          <textarea rows=5 columns=10></textarea>
+          <br><br>
+        </div>
+
+        <div id="q2">
+          <h2>Which country is closest in behaviour to the highlighted country?</h2>
+          <h3>ENTER to pause / restart</h3> <h3>CLICK country to select</h3>
+          <h2>Briefly explain why you believe it is closest in behaviour.</h2>
+          <textarea rows=5 columns=10></textarea>
+          <br><br>
+        </div>
+
+        <input id="submit_answer" type="submit" class="button" value="Advance">
+      </div>
+
+    </div>
+  </body>
+
+    
+
+<script type="text/javascript">
         function hide(idelement) {
             document.getElementById(idelement).style.display = "none";
         }
+
         function show(idelement) {
             document.getElementById(idelement).style.display = "block";
         }
 
-        function update_mapping(e) {
-            console.log(e)
-            mapping[e.target.id.replace("select-","")] = e.target.value;
-            d3.selectAll("svg").remove()
-            data_series = generateData(gapminder,mapping)
-            showData(data_series)
-        }
+        //https://stackoverflow.com/questions/2332811/capitalize-words-in-string
+        String.prototype.capitalize = function() {
+            return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+        };
 
         tasks = [
-              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, ["Sub-Saharan Africa", "Europe & Central Asia"], "Turkey"],
-              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "child_mortality", "l": "income"}         , ["East Asia & Pacific", "America"], "Vietnam"],        
-              [{"y": "life_expectancy", "x": "child_mortality", "s": "fertility_rate" , "l": "income"}         , ["South Asia", "America"], "India"],       
-              [{"y": "life_expectancy", "x": "income"         , "s": "fertility_rate" , "l": "child_mortality"}, ["Middle East & North Africa","Europe & Central Asia"], "Oman"],
-              [{"y": "life_expectancy", "x": "income"         , "s": "child_mortality", "l": "fertility_rate"} , ["East Asia & Pacific", "South Asia"], "China"],
-              [{"y": "life_expectancy", "x": "child_mortality", "s": "income"         , "l": "fertility_rate"} , ["East Asia & Pacific","Sub-Saharan Africa"], "Japan"]
+              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, "Mali"],
+              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "child_mortality", "l": "income"}, "Vietnam"],        
+              [{"y": "life_expectancy", "x": "child_mortality", "s": "fertility_rate" , "l": "income"} , "Qatar"],       
+              [{"y": "life_expectancy", "x": "income"         , "s": "fertility_rate" , "l": "child_mortality"}, "UnitedArabEmirates"],
+              [{"y": "life_expectancy", "x": "income"         , "s": "child_mortality", "l": "fertility_rate"}, "Kazakhstan"],
+              [{"y": "life_expectancy", "x": "child_mortality", "s": "income"         , "l": "fertility_rate"}, "Switzerland"]
            ]                      
 
-        var advance_timer = d3.timer(function(){})
+        // this timer runs in the background, and ensures that the target country
+        // for the nearest neighbour task is highlighted in red
 
+        var is_paused = 0
 
-        function advance(i) {
-          d3.selectAll("svg").remove()
-          highlighted = "null"
+        var highlight_timer = d3.timer(function(){})
 
-          mapping = tasks[i][0]
+        function advance(trial_i, question_i,highlight) {
+          
+
+          // only display one question at a time
+          question_vars = ["q1","q2","q3"];
+          for (i=0;i<3;i++) {
+            if (question_i  == i) {
+              $("#" + question_vars[i]).attr("style","display:block")
+            }
+            else {
+              $("#" + question_vars[i]).attr("style","display:none") 
+            }
+          }
+
+          // during development we experimented with showing
+          // for the final experiment we show all 6 gapminder regions
+
+          mapping = tasks[trial_i][0]
           regions = ["Sub-Saharan Africa","Europe & Central Asia","East Asia & Pacific", "South Asia","Middle East & North Africa","America"]
 
+          // this var records the user's answer to the nearest neighbour question
+          highlighted = highlight;
+
+          // delete and regenerate the svg with the new mapping
+
+          d3.selectAll("svg").remove()
           data_series = generateData(gapminder,mapping)
-          showData(data_series)
-          
-          advance_timer.stop()
-          advance_timer = d3.timer(()=>d3.selectAll("#" + tasks[i][2]).attr("style","stroke:red; stroke-width:2px"));
+          showData(data_series)              
 
+          // stop showing the previous target in red
+          // show the new target
 
-          for (key in tasks[i][0]) {
-            $("#select-" + key).val(tasks[i][0][key])
-            
+          highlight_timer.stop()
+          if (question_i == 1)
+          {
+            highlight_timer = d3.timer(()=>d3.selectAll("#" + tasks[trial_i][1]).attr("style","stroke:red; stroke-width:2px"));
           }
-            
+          
 
-          $("input[type=checkbox]").each( function(key,value) {if (regions.indexOf(value.value) > -1) {value.checked = true} else {value.checked = false}})
+          // display the mapping to the user
+          for (key in tasks[trial_i][0]) {
+            $("#select-" + key).html(tasks[trial_i][0][key].replace("_"," ").capitalize())
+            
+          }            
       
-          // stop accidental advance when spacebar
+          // De-select the advance button so the user does not automatically hit it 
+          // when they pause with ENTER button
           $('input').blur()
 
         }
 
         function pause() {
-          global_timer.stop()
+          //global_timer.stop()
           d3.selectAll("circle").transition()
         }
 
-        function restart()  {
-          regenerate()
-        }
-
         function regenerate() {
-
-            // TODO: there was a bug while going from year 0 to year N if the process is interrupted
-            year_0 = $("#year_0").val()
-            year_N = $("#year_N").val()
-
-            // regions = []
-            // $("input[type=checkbox]:checked").each( function(key,value) {if (value.defaultValue){regions.push(value.defaultValue)}})
-
             d3.selectAll("svg").remove()
             data_series = generateData(gapminder,mapping)
             showData(data_series)
         }
 
-        $("#year_0").on("change",regenerate)
-        $("#year_N").on("change",regenerate)
-
-        $("#controls > select").on("change",update_mapping)
-        $("input[type=checkbox]").on("change",regenerate)
-
+        $("#controls > select").on("click",function() {})
+        
         d3.select("body").on("keypress", function() {
             if(d3.event.keyCode === 13){
-              if (global_timer._time != "Infinity"){
+              if (!is_paused){
+                is_paused = 1;
                 pause();
               }
               else {
+                is_paused = 0;
                 regenerate()
               }
             }
@@ -273,57 +282,60 @@
             answer["ranks"] = [$("#select-domininant-x").val(), $("#select-domininant-s").val(), $("#select-domininant-l").val() ]
             answer["closest"] = highlighted
             answers.push(answer)
-
         }
 
-        $("#submit_answer").on("click", function () {
-          trial_i += 1
-          if (trial_i < 6) {
-            add_answer()
-            advance(trial_i)
+        function advanceButtonHandler () {
+          $('input').prop('checked', false);
+
+          // if it's not the last trial
+          if (trial_i < 5) {
+            add_answer(trial_i,question_i)
+            trial_i += 1
+            advance(trial_i,question_i,"null")
           }
 
-          else if (trial_i == 6){
-            add_answer()
-            show("end")
-            pause()
-            localStorage["answers"] = JSON.stringify(answers)
+          else if (trial_i == 5){
+            // if it's the last trial for this question
+            if (question_i < 2) {
+              // go to the next question
+              add_answer(trial_i,question_i)
+              question_i += 1 
+              trial_i = 0
+              advance(trial_i,question_i,"null")
+            }
+            else if (question_i == 2) {
+              // or if it's the last question, save the answers
+              // and show the end screen
+              add_answer(trial_i,question_i)
+              show("end")
+              pause()
+              localStorage["answers"] = JSON.stringify(answers)  
+            }
           }
+        }
+
+
+
+
+        $("#submit_answer").on("click", function () {
+          
+          if (true)
+          //if (confirm("Are you sure you want to advance?"))
+          {
+            advanceButtonHandler();
+          }      
+          
         });
 
         var question = ""
         question_i = 0 
-        $("#toggle_q").on("click", function () {
-                  question_vars = ["q1","q2","q3"];
-                  
-                  for (i=0;i<3;i++) {
-                    if ((question_i % 3) == i) {
-                      $("#" + question_vars[i]).attr("style","display:block")
-                    }
-                    else {
-                      $("#" + question_vars[i]).attr("style","display:none") 
-                    }
-                  }
 
-                  question_i += 1;
+        advance(0,0,"null")
 
-                });
-
-        var paused = ""
-        paused_i = 0 
-        $("#toggle_p").on("click", function () {
-                  paused_vars = ["","position","fill","r"]
-                  paused_i += 1
-                  paused = paused_vars[paused_i % 4]
-                });
-
-
-
-        advance(0)
+        $("#replay").on("click", function() {
+          advance(trial_i,question_i,highlighted)
+        });
 
 
   </script>
-
-
-  </body>
 </html>

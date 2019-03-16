@@ -1,7 +1,13 @@
 body {
-	font: 11px sans-serif;
+	font: 12px sans-serif;
 	background-color: #ffffff;
 	
+}
+
+
+circle {
+	stroke: black;
+    stroke-width: 1;
 }
 
 .legend {
@@ -21,7 +27,7 @@ body {
 }
 
 p {
-	font-size: 15pt;
+	font-size: 12pt;
 	font-family: Roboto Mono, sans-serif;
 	font-weight: 2px;
 }
@@ -54,8 +60,9 @@ select {
 
 .controls
 {
+	text-align: center;
 	padding-left: 10px;
-	padding-top: 80px;
+	padding-top: 58px;
 	width: 400px;
 	float: left;
 }
@@ -69,4 +76,9 @@ textarea
 .map
 {
 	border: 1px solid black;
+}
+
+.highlight {
+    stroke: blue;
+    stroke-width: 2px;
 }

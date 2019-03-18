@@ -186,15 +186,10 @@
 
 
         tasks = [
+            
+              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, "Mali",0]
               
-            [{"y": "life_expectancy", "x": "fertility_rate" , "s": "child_mortality", "l": "income"}, "Vietnam",0],        
-                  
-            [{"y": "life_expectancy", "x": "income"         , "s": "fertility_rate" , "l": "child_mortality"}, "UnitedArabEmirates",1],
-              
-            [{"y": "life_expectancy", "x": "child_mortality", "s": "income"         , "l": "fertility_rate"}, "Kuwait",2]
-            //[{"y": "life_expectancy", "x": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, "Mali",0],
-            //[{"y": "life_expectancy", "x": "child_mortality", "s": "fertility_rate" , "l": "income"} , "Turkmenistan",1],   
-            //[{"y": "life_expectancy", "x": "income"         , "s": "child_mortality", "l": "fertility_rate"}, "Kazakhstan",2],
+            
            ]                      
 
         var cur_view_number = 0
@@ -470,8 +465,8 @@
         $("#submit_answer").on("click", function () {
           
           if (!assert_answer_entered(question_i)) {
-            alert("Please complete the question before advancing")
-            return;
+            //alert("Please complete the question before advancing")
+            //return;
           }
           
           advanceButtonHandler();

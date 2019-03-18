@@ -38,11 +38,8 @@ function generateData (data, mapping) {
 
         // manually define ranges for data variables
 
-        // for income and child mortality, pad the left side of the chart
-        // by starting a little lower than 0
-        // to prevent overlap between bubbles + axis
-        ranges["income"] = [-2000,125000]
-        ranges["child_mortality"] = [-3,430]        
+        ranges["income"] = [0,125000]
+        ranges["child_mortality"] = [0,430]        
         
         // fertility rate almost never drops below 1
         // life_expectancy almost never drops below 20
@@ -52,7 +49,7 @@ function generateData (data, mapping) {
 
         // manually define ranges for visual variables
         
-        ranges["s"] = [25,225]
+        ranges["s"] = [16,196]
         ranges["l"] = [75,255] // luminance does not go from 0 -> 255 because 
                                // overplotting 
 
@@ -132,6 +129,11 @@ function showData(data_series) {
             .append("svg")
             .attr("width", canvas_width)
             .attr("height", canvas_height)
+
+
+        legend_coords = [[400,20],[400,370], [400,20]]
+
+        make_legend(svg, sizeScale, mapping["s"], lumScale,mapping["l"], legend_coords[cur_view_number])
 
 
         var circles = svg.selectAll(".country_circle")

@@ -51,7 +51,7 @@
         </div>
 
         <div id="q2">
-          <h2>Which state is closest in behaviour to the highlighted state?</h2>
+          <h2>Which country is closest in behaviour to the highlighted country?</h2>
           <h3>ENTER to pause / restart</h3> <h3>CLICK country to select</h3>
           <h2>Briefly explain why you believe it is closest in behaviour.</h2>
           <textarea id="closest_explanation" rows=5 columns=10></textarea>
@@ -386,10 +386,7 @@ var answers = [["map_number","patterns_explanation","closest","closest_explanati
 
 // structure: translation vector (centers the map around these coordinates), mode, map_number, legend_coords
 var trials = [
-        [[width * 1/4,height * 1/5], "Mode 2", "Kentucky",0, [640,250]],
-        [[width,height * 5/6], "Mode 2","SouthDakota",1, [10,250]],
-        [[width,height * 1/4], "Mode 1","Oklahoma",2, [10,250]],
-        [[width * 1/5,height * 7/8], "Mode 1","Massachusetts",3, [640,250]]
+        [[width * 1/2,height * 1/2], "Mode 2", "Kentucky",0, [640,250]],
 ]
 
 trials = shuffle(trials)
@@ -510,8 +507,8 @@ var progress = 0;
 $("#submit_answer").click( function () {
     
     if (!assert_answer_entered(question_i)) {
-      alert("Please complete the question before advancing")
-      return;
+      //alert("Please complete the question before advancing")
+      //return;
     }
 
     progress+=1

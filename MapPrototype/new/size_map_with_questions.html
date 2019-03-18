@@ -6,6 +6,8 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="shuffle.js"></script>
+<script src="legend.js"></script>
 <link rel="stylesheet" type="text/css" href="main.css">
 <link rel="stylesheet" type="text/css" href="slider.css">
 
@@ -13,30 +15,51 @@
 <body>
 <div class="map_container">
 
-<div style="border: 1px solid black; padding-left: 5px">
-  <p> <b>Color</b>: <span id="color_text">Change in Voter Turnout From 2012 to 2016 (Purple is decrease)</span> </p>
-  <p> <b>Size</b>: <span id="motion_text">Swing (2016 Margin - 2012 Margin). Rightward motion means more Republican.</span> </p>
-</div>
 <br>
 <div class="map">
 </div>
 <div style="padding-top: 50px">
-<!--<p style="text-align: center" id="progress"><b>Progress: 0/4 trials</b></p>-->
 </div>
+<span id="timer">2 min remaining</span><input id="replay" type="submit" class="button" value="Replay"><span id=progress>0/12 complete</span>
+
 </div>
 <div class="controls">
 
 <div id="question">
-        <input id="replay" type="submit" value="Replay">
+        
+
+        <br><br>        
+        <div style="border: 1px solid black; padding-left: 5px">
+          <p> <b>Brightness</b>: <span id="color_text"></span> </p>
+          <p> <b>Size</b>: <span id="size_text"></span> </p>
+        </div>
+
 
         <div id="q1">
           <h2>What patterns do you see in the visualization?</h2>
-          <textarea rows=10 columns=200></textarea>
+          <h2>Describe (at least) 2-3 groups of points that behave in the same way.</h2>
+          <textarea rows=2 columns=200 id="patterns_explanation0"></textarea>
+          <br><br>
+          <textarea rows=2 columns=200 id="patterns_explanation1"></textarea>
+          <br><br>
+          <textarea rows=2 columns=200 id="patterns_explanation2"></textarea>
+          <br><br>
+          <textarea rows=2 columns=200 id="patterns_explanation3"></textarea>
+          <br><br>
+          <textarea rows=2 columns=200 id="patterns_explanation4"></textarea>
+          <br><br>
+        </div>
+
+        <div id="q2">
+          <h2>Which country is closest in behaviour to the highlighted country?</h2>
+          <h3>ENTER to pause / restart</h3> <h3>CLICK country to select</h3>
+          <h2>Briefly explain why you believe it is closest in behaviour.</h2>
+          <textarea id="closest_explanation" rows=5 columns=10></textarea>
           <br><br>
         </div>
 
         <div id="q3">
-          <h2>Which dynamic variable(s) create the most visible patterns in the visualization?</h2>
+          <h2>Which dynamic variable creates the most visible patterns in the visualization?</h2>
           <div style="border: 1px solid black; text-align: center;">
 
           <!-- Adapted from: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio -->
@@ -47,7 +70,6 @@
               <input type="radio" id="DSChoice1"
                name="DS" value="1">
               <label for="DSChoice1">Rank 1 (Strongest)</label>
-
               <input type="radio" id="DSChoice2"
                name="DS" value="2">
               <label for="DSChoice2">Rank 2 (Weakest)</label>     
@@ -60,29 +82,20 @@
               <input type="radio" id="DLChoice1"
                name="DL" value="1">
               <label for="DLChoice1">Rank 1 (Strongest)</label>
-
               <input type="radio" id="DLChoice2"
                name="DL" value="2">
-              <label for="DLChoice2">Rank 2 (Weakest) </label>
-              
+              <label for="DLChoice2">Rank 2 (Weakest) </label>              
             </div>
-          </form>          
-            
+          </form>                      
             <br></br>
           </div>
           
           <h2>Briefly explain why you chose this ranking.</h2>
-          <textarea rows=5 columns=10></textarea>
+          <textarea rows=5 columns=10 id="rank_explanation"></textarea>
           <br><br>
         </div>
 
-        <div id="q2">
-          <h2>Which country is closest in behaviour to the highlighted country?</h2>
-          <h3>ENTER to pause / restart</h3> <h3>CLICK country to select</h3>
-          <h2>Briefly explain why you believe it is closest in behaviour.</h2>
-          <textarea rows=5 columns=10></textarea>
-          <br><br>
-        </div>
+        
 
 
     <input id="submit_answer" type="submit" value="Advance">
@@ -103,7 +116,10 @@ var highlight_timer = d3.timer(function(){})
 
 var global_timer;
 
-function render_map(center,render_mode,highlight) {
+var fill_ramp
+
+function render_map(center,render_mode,highlight,coords) {   
+    is_paused = 0
 
     highlighted = highlight
     
@@ -117,8 +133,6 @@ function render_map(center,render_mode,highlight) {
         $("#" + question_vars[i]).attr("style","display:none") 
       }
     }
-
-
 
     var mode = render_mode;
     d3.selectAll("svg").remove();
@@ -147,7 +161,7 @@ function render_map(center,render_mode,highlight) {
     //Create SVG element and append map to the SVG
     
     // Load in my states data
-    d3.csv("calculations.csv", function(data) {
+    d3.csv("map_data.csv", function(data) {
 
       
       function get_ramp(data, varName)  {
@@ -159,43 +173,18 @@ function render_map(center,render_mode,highlight) {
         var minVal = d3.min(dataArray);
         var maxVal = d3.max(dataArray);
         var absMax= Math.max(Math.abs(minVal),Math.abs(maxVal));
-        var ramp = d3.scaleSequential(d3.interpolate(2,25)).domain([-absMax,absMax]);
+        var ramp = d3.scaleSequential(d3.interpolate(25,225)).domain([-absMax,absMax]);
         return ramp;
       }
 
+      //these ramps are for the size of the points
       var ramp = get_ramp(data, "turnout_delta");
-      var delta_ramp = get_ramp(data, "dem_delta");
+      var dem_ramp = get_ramp(data, "dem_delta");
 
+      // use the existing ramps to make ramps for luminance by interpolating between black and white
       interp_bw = d3.interpolateLab("black","white");
-
-      var g_ramp = d3.scaleSequential(interp_bw).domain([ramp.domain()[0] ,ramp.domain()[1] ]);
-      var g_delta_ramp = d3.scaleSequential(interp_bw).domain([delta_ramp.domain()[0],delta_ramp.domain()[1] ]);
-
-      function grayscale_ramp(num) {
-
-          if (num > g_ramp.domain()[1]) {
-            return "rgb(255,255,255)";
-          }
-          else if (num < g_ramp.domain()[0]) {
-            return "rgb(0,0,0)";
-          }
-          else {
-            return g_ramp(num);
-          }
-      }
-
-      function grayscale_delta_ramp(num) {
-
-          if (num > g_delta_ramp.domain()[1]) {
-            return "rgb(255,255,255)";
-          }
-          else if (num < g_delta_ramp.domain()[0]) {
-            return "rgb(0,0,0)";
-          }
-          else {
-            return g_delta_ramp(num);
-          }
-      }
+      fill_ramp = d3.scaleSequential(interp_bw).domain([ramp.domain()[0], ramp.domain()[1] ]);
+      var dem_fill_ramp = d3.scaleSequential(interp_bw).domain([dem_ramp.domain()[0],dem_ramp.domain()[1] ]);
 
       // Load GeoJSON data and merge with states data
       d3.json("us-states.json", function(json) {
@@ -207,32 +196,19 @@ function render_map(center,render_mode,highlight) {
           // Loop through each state data value in the .csv file
           for (var i = 0; i < data.length; i++) {
 
-            // Grab State Name
+            var dem_delta = data[i].dem_delta;
+            var turnout_delta = data[i]["turnout_delta"]          
             var dataState = data[i].state;
-
-            // Grab data value
-            var dataValue = data[i].dem_delta;
-            var dataFlipped = -1 * data[i].value;
-            var dataMargin = data[i]["2016_margin_flip"]
-            var dataOldMargin = data[i]["2012_margin"]
-            var turnout_delta = data[i]["turnout_delta"]
-
 
             // Find the corresponding state inside the GeoJSON
             for (var j = 0; j < json.features.length; j++) {
               var jsonState = json.features[j].properties.name;
 
               if (dataState == jsonState) {
-
                 // Copy the data value into the JSON
-                json.features[j].properties.value = dataValue;
-                json.features[j].properties.flipped = dataFlipped;
-                json.features[j].properties.margin = dataMargin;
-                json.features[j].properties.old_margin = dataOldMargin;
+                json.features[j].properties.dem_delta = dem_delta;
                 json.features[j].properties.turnout_delta = turnout_delta;
                 json.features[j].properties.state = dataState;
-
-                json.features[j].properties.votes = 8    // make them all a standard size
 
                 // Stop looking through the JSON
                 break;
@@ -249,112 +225,115 @@ function render_map(center,render_mode,highlight) {
             .style("stroke", "black")
             .style("stroke-width", "0.7")
             .attr("fill", function(d) {
-                return "rgb(172,218,151)"});
-                //return "rgb(119,119,119"});
-
-            
-            svg.selectAll("circle").data(json.features).enter().append("circle")
+                return "rgb(172,218,151)"}); // makes the map a green color    
+                        
+            svg.selectAll("circle").data(json.features).enter().append("circle").attr("class","state_circle")
             .attr("cx", function (d,i) {
                return projection([centroid_array[i]["Longitude"],centroid_array[i]["Latitude"]])[0]
               })
             .attr("cy", function (d,i) {
                return projection([centroid_array[i]["Longitude"],centroid_array[i]["Latitude"]])[1]
-              })
-            .attr("r", function(d) {
-               return Math.sqrt(d.properties.votes) * 2 })
-            .attr("fill", function(d) {
-              return ramp(d.properties.margin);})
+              })            
             .attr("id", function(d) {
               return d.properties.state.replace(/\s/g, '');})
-     
 
-            
-
-            // DC is not a state, and it is occluded by Maryland
-            
 
             function play(mode) {
               
               if (mode == "Mode 1") {
 
-                  function do_circle(elapsed) {
-                    is_paused = 0;
-                    var circ = d3.selectAll("circle").data(json.features)
-                    circ
-                    .attr("fill", function(d) {
+                function do_circle(elapsed) {
+                  make_legend(svg,ramp,"Change in voter turnout", dem_fill_ramp,"Change in Dem. vote share",coords)
+                  is_paused = 0;
+                  var circ = d3.selectAll(".state_circle").data(json.features)
 
-                        col =  $("#grayscale:checked").val() == "on" ? grayscale_delta_ramp : grayscale_delta_ramp;
-                      return col(0);})
+                  circ
                     .attr("r", function(d) {
-                      return Math.sqrt(ramp(0)) * 3 })
+                      return Math.sqrt(ramp(0))})
+                    .attr("fill", function(d) {
+                      return dem_fill_ramp(0);})
                     .attr("visibility","hidden")
                     .transition()
                     .duration(250)
                     .transition()
                     .duration(2000)
                     .attr("r", function(d) {
-                      return Math.sqrt(ramp(d.properties.turnout_delta)) * 3 })
+                      return Math.sqrt(ramp(d.properties.turnout_delta))})
                     .attr("fill", function(d) {
-                     col =  $("#grayscale:checked").val() == "on" ? grayscale_delta_ramp : grayscale_delta_ramp;
-                      return col(d.properties.value);})
-
-                      setTimeout(function (){svg.selectAll("circle").attr("visibility","");d3.selectAll("#DistrictofColumbia").attr("visibility","hidden");}, 250)        
-                      setTimeout(function (){if (!is_paused) {svg.selectAll("circle").attr("visibility","hidden")}}, 2250)    
-                  }
+                      return dem_fill_ramp(d.properties.dem_delta);})
+                      // DC is not a state, and it is occluded by Maryland
+                      setTimeout(function (){
+                        svg.selectAll(".state_circle").attr("visibility","");
+                        d3.selectAll("#DistrictofColumbia").attr("visibility","hidden");
+                      
+                      }, 250)        
+                      setTimeout(function (){
+                        if (!is_paused) {
+                          svg.selectAll(".state_circle").attr("visibility","hidden");
+                         // is_paused = 1;
+                        }
+                      }, 2250)    
+                }
 
 
               }
               if (mode == "Mode 2") {
 
                 function do_circle() {
+                  make_legend(svg,dem_ramp,"Change in Dem. vote share",fill_ramp,"Change in voter turnout",coords)
                   is_paused = 0;
-                  var circ = d3.selectAll("circle").data(json.features)
+                  var circ = d3.selectAll(".state_circle").data(json.features)
                 
                   circ
-                  .attr("fill", function(d) {
+                    .attr("r", function(d) {
+                        return Math.sqrt(dem_ramp(0))})
+                    .attr("fill", function(d) {                    
+                        return fill_ramp(0);})                    
+                    .attr("visibility","hidden")
+                    .transition()
+                    .duration(250)
+                    .transition()
+                    .duration(2000)
+                    .attr("r", function(d) {
+                        return Math.sqrt(dem_ramp(d.properties.dem_delta))})
+                    .attr("fill", function(d) {                   
+                     return fill_ramp(d.properties.turnout_delta)})
 
-                      col =  $("#grayscale:checked").val() == "on" ? grayscale_ramp : grayscale_ramp;
-                      return col(0);})
-                  .attr("r", function(d) {
-                      return Math.sqrt(delta_ramp(0)) * 3 })
-                  .attr("visibility","hidden")
-                  .transition()
-                  .duration(250)
-                  .transition()
-                  .duration(2000)
-                  .attr("r", function(d) {
-                      return Math.sqrt(delta_ramp(d.properties.value)) * 3 })
+                    // DC is not a state, and it is occluded by Maryland
+                    setTimeout(function (){
+                      svg.selectAll(".state_circle").attr("visibility",""); 
+                      d3.selectAll("#DistrictofColumbia").attr("visibility","hidden");
 
-                  .attr("fill", function(d) {
-                   col =  $("#grayscale:checked").val() == "on" ? grayscale_ramp : grayscale_ramp;
-                   return col(d.properties.turnout_delta)})
-                     
-                  setTimeout(function (){svg.selectAll("circle").attr("visibility",""); d3.selectAll("#DistrictofColumbia").attr("visibility","hidden");}, 250)        
-                  setTimeout(function (){if (!is_paused) {svg.selectAll("circle").attr("visibility","hidden")}}, 2250)    
+                    }, 250)        
+                    setTimeout(function (){
+                      if (!is_paused) {
+                        svg.selectAll(".state_circle").attr("visibility","hidden");
+                        //    is_paused = 1;
+                      }
+                  }, 2250)    
                   
                 }
               
               }
 
-              
-
               highlight_timer.stop()
-              if (question_i == 2)
+              if (question_i == 1)
               {
                 highlight_timer = d3.timer(()=>d3.selectAll("#" + trials[trial_i][2]).attr("style","stroke:red; stroke-width:2px"));
               }
               $("#" + highlighted).addClass("highlight")
+
               do_circle()
-              //global_timer = d3.interval(do_circle, 2700)              
+
             }
             function change_encoding_text(mode){
                 if (mode == "Mode 1") {
-                  d3.select("#motion_text").html("Change in Voter Turnout From 2012 to 2016 (Becoming smaller is decrease)")
-                  d3.select("#color_text").html("Change in Democratic votes from 2012 to 2016. (Darkening is decrease).")
+                  d3.select("#size_text").html("Change in <b>voter turnout</b> from 2012 to 2016 (Becoming smaller is decrease)")
+                  d3.select("#color_text").html("Change in <b>Democratic votes</b> from 2012 to 2016. (Darkening is decrease).")
                 }
                 else {
-                  d3.select("#motion_text").html("Change in Democratic votes from 2012 to 2016. (Becoming smaller is decrease).</span> </p>")
-                  d3.select("#color_text").html("Change in Voter Turnout From 2012 to 2016. (Darkening is decrease)")
+                  d3.select("#size_text").html("Change in <b>Democratic votes</b> from 2012 to 2016. (Becoming smaller is decrease).</span> </p>")
+                  d3.select("#color_text").html("Change in <b>voter turnout</b> from 2012 to 2016. (Darkening is decrease)")
                 }
             }
 
@@ -362,24 +341,17 @@ function render_map(center,render_mode,highlight) {
 
                 if (global_timer != undefined) {
                     global_timer.stop()
-                }
+                }    
 
-
-                d3.selectAll("circle")
-                .data(json.features)
-                .attr("transform", "")
-            
-
-                svg.selectAll("circle")
+                svg.selectAll(".state_circle")
                 .data(json.features)
                 .attr("fill", function(d) {
-                    return grayscale_ramp(0);
+                    return fill_ramp(0);
                 })
                 .attr("r", function(d) {
-                    return Math.sqrt(delta_ramp(0)) * 3
+                    return Math.sqrt(dem_ramp(0))
                 })
 
-              
                 change_encoding_text(mode)
             }
 
@@ -387,11 +359,7 @@ function render_map(center,render_mode,highlight) {
 
           d3.select("#play")
                .on("mousedown", function() {play(mode)})
-                   .on("touchdown", function() {play(mode)})
-
-            d3.select("#reset")
-                .on("mousedown", function() {reset(mode)})
-                .on("touchdown", function() {reset(mode)})
+               .on("touchdown", function() {play(mode)})
 
 
           reset(mode)
@@ -408,80 +376,214 @@ function render_map(center,render_mode,highlight) {
     });
 
     $('input').blur()
-
-
-
-
 }
 
-var answers = []
-
+var answers = [["map_number","patterns_explanation","closest","closest_explanation","ds_rank","dl_rank","rank_explanation"],[],[],[],[]]
 
 // the map views are chosen arbitrarily
 // we try to minimize the overlap as much as possible
 // while keeping a reasonable view
-var trials = [
-        [[width * 1/4,height * 1/5], "Mode 1", "Kentucky"],
-        [[width,height * 5/6], "Mode 2","SouthDakota"],
-        [[width,height * 1/4], "Mode 2","Iowa"],
-        [[width * 1/4,height * 7/8], "Mode 1","WestVirginia"],
 
+// structure: translation vector (centers the map around these coordinates), mode, map_number, legend_coords
+var trials = [
+        [[width * 1/4,height * 1/5], "Mode 2", "Kentucky",0, [640,250]],
+        [[width,height * 5/6], "Mode 2","SouthDakota",1, [10,250]],
+        [[width,height * 1/4], "Mode 1","Oklahoma",2, [10,250]],
+        [[width * 1/5,height * 7/8], "Mode 1","WestVirginia",3, [640,250]]
 ]
+
+trials = shuffle(trials)
+
+for (i=0; i < trials.length; i++ ) {
+    answers[i+1].push(trials[i][3])
+}
 
 var trial_i = 0;
 var question_i = 0;
 
 question = trials[trial_i]
 
-render_map(question[0],question[1],"null")
+var coords = trials[trial_i][4]
+render_map(question[0],question[1],"null",coords)
 
+function assert_answer_entered(question_i) {
 
+  // this boolean flag goes to 0 if part of the answer is missing
+  answered = 1
+
+  questions_answered = 0
+  if  (question_i == 0) {
+      answered = answered && ($("#patterns_explanation0").val() != '')
+      answered = answered && ($("#patterns_explanation1").val() != '')
+  }
+
+  if (question_i == 1) {
+      answered = answered && (highlighted != 'null')
+      answered = answered && ($("#closest_explanation").val() != '')
+  }
+  
+  if (question_i == 2)
+  {
+      answered = answered && ($("input[name='DS']:checked").val() != undefined)
+      answered = answered && ($("input[name='DL']:checked").val() != undefined)
+  }
+  return answered
+}
+
+function  add_answer(trial_i,question_i) {
+  // get the correct row of the answers array
+  arr = answers[trial_i + 1]
+
+  if (question_i == 0) {
+    answers_str = '"'
+    for (i=0; i < 5;i++) {
+      name = "#patterns_explanation" + i
+      answers_str += $(name).val().replace(/"/g,"") + "\n"
+      
+    }
+    arr.push( answers_str + '"')
+  }
+  else if (question_i == 1)
+  {
+      arr.push(highlighted)
+      arr.push('"' + $("#closest_explanation").val().replace(/"/g,"") + '"')
+  }
+  else if (question_i == 2)
+  {
+
+      DS_rank = $("input[name='DS']:checked").val()
+      if (DS_rank != undefined)
+      {
+        arr.push(DS_rank)
+      }      
+      else{
+        arr.push("")
+      }
+
+      DL_rank = $("input[name='DL']:checked").val()
+      if (DL_rank != undefined)
+      {
+        arr.push(DL_rank)
+      }
+      else {
+        arr.push("")
+      }
+      
+      arr.push('"' + $("#rank_explanation").val().replace(/"/g,"") + '"')
+  }
+}
+
+var advance_timer = d3.interval(function() {})
+var timer_i = 0
+
+function reset_timer() {
+   advance_timer.stop()
+   timer_i = 0
+   d3.selectAll("#timer").style("color","green")
+   d3.selectAll("#timer").html("2 min remaining")
+   advance_timer = d3.interval(function () {
+         messages = ['1 min 30s remaining',
+                     '1 min remaining',
+                     '30s remaining',
+                     'Please advance.',]
+         if (timer_i > 3) {
+          return
+         }
+         if (timer_i == 0) {
+          d3.selectAll("#timer").style("color","green")
+         }
+         if (timer_i == 1) {
+          d3.selectAll("#timer").style("color","orange")
+         }
+         if (timer_i == 3) {
+          d3.selectAll("#timer").style("color","red")
+         }
+         $("#timer").html(messages[timer_i])
+         timer_i +=1
+       }, 30000)
+
+}
+
+reset_timer()
+
+var progress = 0;
 $("#submit_answer").click( function () {
     
+    if (!assert_answer_entered(question_i)) {
+      //alert("Please complete the question before advancing")
+      //return;
+    }
+
+    progress+=1
+    $("#progress").html(progress + "/12 complete")
+
     if (trial_i < 3) {
+        add_answer(trial_i,question_i)
         trial_i++ 
-        answers.push([$("textarea").val(), $("#select-domininant").val()])
         question = trials[trial_i]
-        //$("#progress").html("<b>Progress: "+question_i+"/4 trials</b>")
-        render_map(question[0],question[1], "null")
+        
+        render_map(question[0],question[1], "null",question[4])
     }
     else if (trial_i == 3) {
         
         if (question_i < 2)
         {
+          add_answer(trial_i,question_i)
           question_i++
           trial_i = 0
           question = trials[trial_i]
-          $("#progress").html("<b>Progress: "+question_i+"/4 trials</b>")
-          render_map(question[0],question[1], 'null')
+          //$("#progress").html("<b>Progress: "+question_i+"/4 trials</b>")
+          render_map(question[0],question[1], 'null',question[4])
         }
         else if (question_i == 2) {
-          answers.push([$("textarea").val(), $("#select-domininant").val()])
-          $("body").html("<h1>Experiment Complete</h1>")
+          add_answer(trial_i,question_i)
+          
+          $("body").html("<h1>Phase Complete</h1>")
+
+          // from https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
+          let csvContent = "data:text/csv;charset=utf-8," + answers.map(e=>e.join(",")).join("\n");
+          var encodedUri = encodeURI(csvContent);
+          var link = document.createElement("a");
+          link.setAttribute("href", encodedUri);
+          now = new Date();
+          time_stamp = now.toLocaleString().replace(/[/ :]/g,'_').replace(",","")
+          link.setAttribute("download", "map_results" + time_stamp + ".csv");
+          document.body.appendChild(link); // Required for FF
+
+          link.click();
       }
-        
+          
+
     }
+     
+      reset_timer()
+       // clear input elements
+      $("textarea").val("")
+      $('input').prop('checked', false);
 })
 
 function pause() {
-        //global_timer.stop()
         d3.selectAll("circle").transition()
       }
 
 d3.select("body").on("keypress", function() {
     if(d3.event.keyCode === 13){
-      if (!is_paused){
+      // if it's not currently paused
+      // AND the circles are visible
+      if (!is_paused && d3.select(".state_circle").attr("visibility") == ""){
         is_paused = 1;
         pause();
       }
       else {
         is_paused = 0;
-        render_map(question[0],question[1], highlighted)
+        render_map(question[0],question[1], highlighted,question[4])
       }
     }
   });
 
-$("#replay").on("click", function () {render_map(question[0],question[1],highlighted) })
+$("#replay").on("click", function () {
+  render_map(question[0],question[1],highlighted,question[4])
+});
 
 </script>
 </body>

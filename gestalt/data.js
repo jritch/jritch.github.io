@@ -35,24 +35,24 @@ function generateData (data, mapping) {
         // TODO: these ranges are for the entire gapminder dataset, not just the years of interest
         // This should be fixed
         ranges = {}
-        for (var entry in mapping) {
-            if (mapping[entry]) {
-                entry_stats =  data["stats"][mapping[entry]]
-                if (entry_stats != undefined){
-                    ranges[mapping[entry]] = [entry_stats["min"],entry_stats["max"]]
-                }
-            }
-        }
 
         // manually define ranges for data variables
-        ranges["income"] = [0,125000]
-        ranges["child_mortality"] = [0,500]
-        ranges["co2_emissions"] = [0,40]
+
+        // for income and child mortality, pad the left side of the chart
+        // by starting a little lower than 0
+        // to prevent overlap between bubbles + axis
+        ranges["income"] = [-2000,125000]
+        ranges["child_mortality"] = [-3,430]        
+        
+        // fertility rate almost never drops below 1
+        // life_expectancy almost never drops below 20
+        ranges["fertility_rate"] = [1,8]
         ranges["life_expectancy"] = [20,85]
+        
 
         // manually define ranges for visual variables
         
-        ranges["s"] = [20,200]
+        ranges["s"] = [25,225]
         ranges["l"] = [75,255] // luminance does not go from 0 -> 255 because 
                                // overplotting 
 
@@ -78,24 +78,9 @@ function generateData (data, mapping) {
             for (var state of entry["states"]) {    
                 // Exclude data outside of the two years of interest
                 if ((state.t+0 == year_0 || state.t+0 == year_N)) {
-                    num_entries += 1
-                    coeff = 0
-                    for (var entry in mapping) {
-
-                        // the data vars corresponding to x and y are converted 
-                        // to pixel space using the scale.linear() function
-                        // the data vars correspoinding to radius and luminance
-                        // are manually converted to using convertToRange
-
-                        if (entry == "x"  ||  entry == "y")
-                        {
-                            data_object[entry].push(state[mapping[entry]])
-                        }
-                        else 
-                        {
-                            data_object[entry].push(convertToRange(state[mapping[entry]],ranges[mapping[entry]],ranges[entry]))
-                        }
-                        coeff+=1
+                    num_entries += 1                    
+                    for (var entry in mapping) {        
+                        data_object[entry].push(state[mapping[entry]])                    
                     }
                 }
             }
@@ -139,6 +124,8 @@ function showData(data_series) {
                         .ticks(10)
                         .tickSize(2);
 
+        var lumScale =  d3.scale.linear().interpolate(d3.interpolateLab).domain(ranges[mapping["l"]]).range(["rgb(85,85,85)","white"])
+        var sizeScale =  d3.scale.linear().domain(ranges[mapping["s"]]).range(ranges["s"])
 
 
         var svg = d3.select("#d3plot")
@@ -147,23 +134,11 @@ function showData(data_series) {
             .attr("height", canvas_height)
 
 
-        var circles = svg.selectAll("circle")
+        var circles = svg.selectAll(".country_circle")
             .data(data_series)
             .enter()
             .append("circle")  
-            .attr("cx", function(d) {
-                 return xScale(d.x[0]);  
-            })
-            .attr("cy", function(d) {  
-                return yScale(d.y[0]);
-            })
-            .attr("r", function(d){ 
-                return Math.sqrt(d.s[0]);
-            })
-            .attr("fill", function(d) { 
-               return d3.rgb(d.l[0], d.l[0], d.l[0]);
-            });
-
+  
         svg.append("g")
             .attr("transform", "translate(0," + (canvas_height - padding) +")")
             .call(xAxis);
@@ -181,8 +156,6 @@ function showData(data_series) {
             .style("fill", "none")
             .style("stroke-width", 2);
 
-        
-
         d3.select("svg").append("text").attr("id","x").attr("x",260)
                             .attr("y",580).attr("font-size","20")
                             .html(mapping["x"])
@@ -193,13 +166,14 @@ function showData(data_series) {
         
         function play() {
             is_paused = 0;
-            svg.selectAll("circle").remove()
+            svg.selectAll(".country_circle").remove()
             
 
-            last_frame = svg.selectAll("circle")
+            last_frame = svg.selectAll(".country_circle")
                 .data(data_series)
                 .enter()
                 .append("circle")  // Add circle svg
+                .attr("class","country_circle")
                 .attr("cx", function(d) {
                    return xScale(d.x[0]);  // Circle's X
                 })
@@ -208,11 +182,11 @@ function showData(data_series) {
                    return yScale(d.y[0]);
                 })
                 .attr("fill", function(d) { // circle's luminance
-                   return d3.rgb(d.l[0], d.l[0], d.l[0]);
+                   return lumScale(d.l[0])
                    
                 })
                 .attr("r", function(d){ // Circle's radius
-                    return Math.sqrt(d.s[0]);
+                    return Math.sqrt(sizeScale(d.s[0]));
                 })
                
                 .attr("id", function(d) {
@@ -236,24 +210,26 @@ function showData(data_series) {
                     return yScale(d.y[1]);  
                 })
                 .attr("fill", function(d) {
-                    return d3.rgb(d.l[1], d.l[1], d.l[1]); 
+                    return lumScale(d.l[1]); 
                 })
                 .attr("r", function(d) {
-                    return Math.sqrt(d.s[1]);
+                    return Math.sqrt(sizeScale(d.s[1]));
                 })
                     
 
-            setTimeout(function (){svg.selectAll("circle").attr("visibility","")}, 250)        
-            setTimeout(function (){if (! is_paused) {svg.selectAll("circle").attr("visibility","hidden")}}, 2250)        
+            setTimeout(function (){svg.selectAll(".country_circle").attr("visibility","")}, 250)        
+            setTimeout(function (){if (! is_paused) {svg.selectAll(".country_circle").attr("visibility","hidden"); 
+            //    is_paused = 1;
+            }}, 2250)        
 
 
-              $("#" + highlighted).addClass("highlight")
+            $("#" + highlighted).addClass("highlight")
 
-              $("circle").on("click", function () {
-                    $("circle").removeClass("highlight")
-                    $(this).addClass('highlight')
-                    highlighted = $(this).attr("id")
-              })
+            $(".country_circle").on("click", function () {
+                $("circle").removeClass("highlight")
+                $(this).addClass('highlight')
+                highlighted = $(this).attr("id")
+            })
 
         
             }

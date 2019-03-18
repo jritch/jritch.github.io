@@ -52,17 +52,36 @@ select {
   text-align: center;
 }
 
+#legend_rect {
+	fill:white;
+	stroke:black;
+	stroke-width:1px;
+}
+
+#timer {
+	font-size: 15px;
+	color: green;
+	padding-right: 20px;
+}
+
+#progress {
+	font-size: 15px;
+	padding-left: 20px;
+}
+
 .map_container
-{
+{	
+	margin-top: 100px;
 	padding-left: 10px;
 	float: left;
+	text-align: center;
 }
 
 .controls
 {
 	text-align: center;
 	padding-left: 10px;
-	padding-top: 58px;
+	padding-top: 100px;
 	width: 400px;
 	float: left;
 }

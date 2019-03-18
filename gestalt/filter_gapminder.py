@@ -42,7 +42,5 @@ for var_name, file_name in new_vars:
 print names
 gapminder_data["pieces"] = [item for item in gapminder_data["pieces"] if item["name"] not in names]
 
-	
-
 with open('gapminder.augmented.json','w') as f:
 	json.dump(gapminder_data,f)

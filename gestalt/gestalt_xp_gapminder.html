@@ -6,9 +6,9 @@
     <script src="https://d3js.org/d3-timer.v1.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
     <script src="./data.js" charset="utf-8"></script>
+    <script src="shuffle.js" charset="utf-8"></script>
     <script src="./gapminder.augmented.js" charset="utf-8"></script>
-    <script xmlns="http://www.w3.org/1999/xhtml" async="" src="https://cdn.rawgit.com/eligrey/Blob.js/0cef2746414269b16834878a8abc52eb9d53e6bd/Blob.js"></script>
-    <script xmlns="http://www.w3.org/1999/xhtml" async="" src="https://cdn.rawgit.com/eligrey/FileSaver.jse9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
+    
   </head>
 
 
@@ -22,13 +22,14 @@
       <div id="xpcontainer">
         <h1 id="year">Quality of Life from 1960 to 2014</h1>
         <h3 id="d3plot"> </h3>
+        <span id="timer">2 min remaining</span><input id="replay" type="submit" class="button" value="Replay"><span id=progress>0/9 complete</span>
       </div>
 
       <div id="end">
         <div id="span">
-          <p> Congratulations! The experiment is over. </p>
+          <p style="font-size: 28px"> Congratulations! This phase is over. </p>
           <br /> <br /> <br /> <br />
-          <p>Please call the experimenter. </p>
+          <p style="font-size: 28px">Please alert the experimenter. </p>
         </div>
       </div>
 
@@ -45,9 +46,9 @@
     
 
     <div id="controls">
-      <input id="replay" type="submit" class="button" value="Replay">
+      
       <br><br>
-      <div style="border:1px solid black">
+      <div style="border:1px solid black; text-align: left; padding-left: 10px">
       <p>
         <b> X Position: </b>
         <span id="select-x"></span>
@@ -61,19 +62,30 @@
       <p>
         <b>Size: </b>
         <span id="select-s"></span>
+        (Becoming smaller is decrease.)
       </p>
       
       <p>
-        <b>Luminance: </b>
+        <b>Brightness: </b>
         <span id="select-l"></span>
+        (Darkening is decrease.)
       </p>
       </div>
       <div id="question">
         
         <div id="q1">
           <h2>What patterns do you see in the visualization?</h2>
-          <textarea rows=10 columns=200></textarea>
+          <h2>Describe (at least) 2-3 groups of points that behave in the same way.</h2>
+          <textarea rows=2 columns=200 id="patterns_explanation0"></textarea>
           <br><br>
+          <textarea rows=2 columns=200 id="patterns_explanation1"></textarea>
+          <br><br>
+          <textarea rows=2 columns=200 id="patterns_explanation2"></textarea>
+          <br><br>
+          <textarea rows=2 columns=200 id="patterns_explanation3"></textarea>
+          <br><br>
+          <textarea rows=2 columns=200 id="patterns_explanation4"></textarea>          
+          
         </div>
 
         <div id="q3">
@@ -138,7 +150,7 @@
           </div>
           
           <h2>Briefly explain why you chose this ranking.</h2>
-          <textarea rows=5 columns=10></textarea>
+          <textarea rows=5 columns=10 id="rank_explanation"></textarea>
           <br><br>
         </div>
 
@@ -146,7 +158,7 @@
           <h2>Which country is closest in behaviour to the highlighted country?</h2>
           <h3>ENTER to pause / restart</h3> <h3>CLICK country to select</h3>
           <h2>Briefly explain why you believe it is closest in behaviour.</h2>
-          <textarea rows=5 columns=10></textarea>
+          <textarea rows=5 columns=10 id="closest_explanation"></textarea>
           <br><br>
         </div>
 
@@ -155,8 +167,6 @@
 
     </div>
   </body>
-
-    
 
 <script type="text/javascript">
         function hide(idelement) {
@@ -172,15 +182,18 @@
             return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
         };
 
+
         tasks = [
-              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, "Mali"],
-              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "child_mortality", "l": "income"}, "Vietnam"],        
-              [{"y": "life_expectancy", "x": "child_mortality", "s": "fertility_rate" , "l": "income"} , "Qatar"],       
-              [{"y": "life_expectancy", "x": "income"         , "s": "fertility_rate" , "l": "child_mortality"}, "UnitedArabEmirates"],
-              [{"y": "life_expectancy", "x": "income"         , "s": "child_mortality", "l": "fertility_rate"}, "Kazakhstan"],
-              [{"y": "life_expectancy", "x": "child_mortality", "s": "income"         , "l": "fertility_rate"}, "Switzerland"]
+              [{"y": "life_expectancy", "x": "fertility_rate" , "s": "income"         , "l": "child_mortality"}, "Mali",0],
+            //  [{"y": "life_expectancy", "x": "fertility_rate" , "s": "child_mortality", "l": "income"}, "Vietnam",1],        
+              [{"y": "life_expectancy", "x": "child_mortality", "s": "fertility_rate" , "l": "income"} , "Turkmenistan",1],       
+            //  [{"y": "life_expectancy", "x": "income"         , "s": "fertility_rate" , "l": "child_mortality"}, "UnitedArabEmirates",3],
+              [{"y": "life_expectancy", "x": "income"         , "s": "child_mortality", "l": "fertility_rate"}, "Kazakhstan",2],
+            //[{"y": "life_expectancy", "x": "child_mortality", "s": "income"         , "l": "fertility_rate"}, "Switzerland",5]
            ]                      
 
+
+        tasks = shuffle(tasks)
         // this timer runs in the background, and ensures that the target country
         // for the nearest neighbour task is highlighted in red
 
@@ -241,7 +254,7 @@
 
         function pause() {
           //global_timer.stop()
-          d3.selectAll("circle").transition()
+          d3.selectAll(".country_circle").transition()
         }
 
         function regenerate() {
@@ -254,7 +267,9 @@
         
         d3.select("body").on("keypress", function() {
             if(d3.event.keyCode === 13){
-              if (!is_paused){
+              // if it's not currently paused
+              // AND the circles are visible
+              if (!is_paused && d3.select(".country_circle").attr("visibility") == ""){
                 is_paused = 1;
                 pause();
               }
@@ -273,28 +288,140 @@
         showData(data_series)
         var trial_i = 0;
 
-        answers = []
+        var answers = [["view_number","patterns_explanation","closest","closest_explanation","dp_rank","ds_rank","dl_rank","rank_explanation"],[],[],[]]
 
-        function add_answer() {
 
-            answer = {}
-            answer["text"] = $("textarea").val()
-            answer["ranks"] = [$("#select-domininant-x").val(), $("#select-domininant-s").val(), $("#select-domininant-l").val() ]
-            answer["closest"] = highlighted
-            answers.push(answer)
+        for (i=0; i < tasks.length; i++ ) {
+          answers[i+1].push(tasks[i][2])
         }
 
-        function advanceButtonHandler () {
-          $('input').prop('checked', false);
+        function assert_answer_entered(question_i) {
 
+          // this boolean flag goes to 0 if part of the answer is missing
+          answered = 1
+
+          questions_answered = 0
+          if  (question_i == 0) {
+              answered = answered && ($("#patterns_explanation0").val() != '')
+              answered = answered && ($("#patterns_explanation1").val() != '')
+          }
+
+          if (question_i == 1) {
+              answered = answered && (highlighted != 'null')
+              answered = answered && ($("#closest_explanation").val() != '')
+          }
+          
+          if (question_i == 2)
+          {
+              answered = answered && ($("input[name='DS']:checked").val() != undefined)
+              answered = answered && ($("input[name='DL']:checked").val() != undefined)
+              answered = answered && ($("input[name='DP']:checked").val() != undefined)
+          }
+          return answered
+        }
+
+
+        function  add_answer(trial_i,question_i) {
+          // get the correct row of the answers array
+          arr = answers[trial_i + 1]
+
+          if (question_i == 0) {
+            answers_str = '"'
+            for (i=0; i < 5;i++) {
+            name = "#patterns_explanation" + i
+            answers_str += $(name).val().replace(/"/g,"") + "\n"
+
+            }
+            arr.push( answers_str + '"')
+          }
+          else if (question_i == 1)
+          {
+              arr.push(highlighted)
+              arr.push('"' + $("#closest_explanation").val().replace(/"/g,"") + '"')
+          }
+          else if (question_i == 2)
+          {
+
+              DP_rank = $("input[name='DP']:checked").val()
+              console.log(DP_rank)
+              if (DP_rank != undefined)
+              {
+                arr.push(DP_rank)
+              }      
+              else{
+                arr.push("")
+              }
+
+              DS_rank = $("input[name='DS']:checked").val()
+              if (DS_rank != undefined)
+              {
+                arr.push(DS_rank)
+              }      
+              else{
+                arr.push("")
+              }
+
+              DL_rank = $("input[name='DL']:checked").val()
+              if (DL_rank != undefined)
+              {
+                arr.push(DL_rank)
+              }
+              else {
+                arr.push("")
+              }
+
+              arr.push('"' + $("#rank_explanation").val().replace(/"/g,"") + '"')
+          }
+        }
+
+
+        var advance_timer = d3.interval(function() {}) 
+        var timer_i = 0
+        function reset_timer() {
+          advance_timer.stop()
+          timer_i = 0
+          d3.selectAll("#timer").style("color","green")
+          d3.selectAll("#timer").html("2 min remaining")
+
+           advance_timer = d3.interval(function () {
+                 messages = ['1 min 30s remaining',
+                             '1 min remaining',
+                             '30s remaining',
+                             'Please advance.',]
+                 if (timer_i > 3) {
+                  return
+                 }
+                 if (timer_i == 0) {
+                  d3.selectAll("#timer").style("color","green")
+                 }
+                 if (timer_i == 1) {
+                  d3.selectAll("#timer").style("color","orange")
+                 }
+                 if (timer_i == 3) {
+                  d3.selectAll("#timer").style("color","red")
+                 }
+                 $("#timer").html(messages[timer_i])
+                 timer_i +=1
+               }, 30000)
+
+        }
+
+        reset_timer()
+
+
+        var progress = 0;
+        function advanceButtonHandler () {
+
+          progress+=1
+          $("#progress").html(progress + "/9 complete")
           // if it's not the last trial
-          if (trial_i < 5) {
+          if (trial_i < 2) {
             add_answer(trial_i,question_i)
             trial_i += 1
             advance(trial_i,question_i,"null")
           }
 
-          else if (trial_i == 5){
+          else if (trial_i == 2){
             // if it's the last trial for this question
             if (question_i < 2) {
               // go to the next question
@@ -309,21 +436,37 @@
               add_answer(trial_i,question_i)
               show("end")
               pause()
-              localStorage["answers"] = JSON.stringify(answers)  
+              
+              // from https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
+              let csvContent = "data:text/csv;charset=utf-8," + answers.map(e=>e.join(",")).join("\n");
+              var encodedUri = encodeURI(csvContent);
+              var link = document.createElement("a");
+              link.setAttribute("href", encodedUri);
+              now = new Date();
+              time_stamp = now.toLocaleString().replace(/[/ :]/g,'_').replace(",","")
+              link.setAttribute("download", "gapminder_results" + time_stamp + ".csv");
+              document.body.appendChild(link); // Required for FF
+
+              link.click();
+
+
             }
           }
+
+          reset_timer()
+          // clear input elements
+          $("textarea").val("")
+          $('input').prop('checked', false);
         }
-
-
-
 
         $("#submit_answer").on("click", function () {
           
-          if (true)
-          //if (confirm("Are you sure you want to advance?"))
-          {
-            advanceButtonHandler();
-          }      
+          if (!assert_answer_entered(question_i)) {
+            //alert("Please complete the question before advancing")
+            //return;
+          }
+          
+          advanceButtonHandler();
           
         });
 

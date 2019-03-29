@@ -324,6 +324,7 @@
               answered = answered && ($("input[name='DS']:checked").val() != undefined)
               answered = answered && ($("input[name='DL']:checked").val() != undefined)
               answered = answered && ($("input[name='DP']:checked").val() != undefined)
+              answered = answered && ($("#rank_explanation").val() != '')
           }
           return answered
         }

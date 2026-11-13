@@ -8,7 +8,8 @@
 body { font-family: Georgia, serif; max-width: 30em; margin: 0 auto; padding: 1em; line-height: 1.4; color: #000; background: #fff; }
 h1 { font-size: 1.5em; }
 button { font: inherit; padding: 0.7em 0; color: #000; background: #eee; border: 1px solid #000; border-radius: 0; cursor: pointer; }
-#pic { display: block; width: 200px; height: 200px; background: #ddd; object-fit: cover; }
+#pic { width: 200px; height: 200px; background: #ddd; display: flex; align-items: center; justify-content: center; }
+#pic img { display: block; width: 200px; height: 200px; object-fit: cover; }
 #name { font-size: 1.4em; font-weight: bold; margin: 0.5em 0; min-height: 2.8em; }
 #answers { display: flex; gap: 0.5em; }
 #answers button { flex: 1; }
@@ -32,7 +33,7 @@ small, .small { font-size: 0.85em; }
 
 <div id="quiz" hidden>
 <p class="small"><span id="count"></span> &middot; current age: <span id="running"></span> &middot; <button id="back">back</button></p>
-<img id="pic" alt="" width="200" height="200">
+<div id="pic"></div>
 <p id="name"></p>
 <div id="answers">
 <button id="yes">Recognize</button>
@@ -52,7 +53,8 @@ small, .small { font-size: 0.85em; }
 <script>
 var ARTISTS = [["Dua Lipa", "dua-lipa"], ["Madonna", "madonna"], ["Zara Larsson", "zara-larsson"], ["Steve Lacy", "steve-lacy"], ["JISOO", "jisoo"], ["Diljit Dosanjh", "diljit-dosanjh"], ["Peggy Gou", "peggy-gou"], ["Kehlani", "kehlani"], ["Solid Grooves", null], ["Giorgio Moroder", "giorgio-moroder"], ["Social Distortion", "social-distortion"], ["Pinegrove", "pinegrove"], ["Angine de Poitrine", "angine-de-poitrine"], ["Leon Thomas", "leon-thomas"], ["Drain Gang", null], ["Snow Strippers", "snow-strippers"], ["Mike D 5D", null], ["CHRIS STASSY", "chris-stassy"], ["Milo J", "milo-j"], ["SG Lewis", "sg-lewis"], ["Kelela", "kelela"], ["Franky Rizardo", "franky-rizardo"], ["Fetty Wap", "fetty-wap"], ["Vintage Culture", "vintage-culture"], ["The Damned", "the-damned"], ["ATARASHII GAKKO!", "atarashii-gakko"], ["Nettspend", "nettspend"], ["American Football", "american-football"], ["xaviersobased", "xaviersobased"], ["La Dispute", "la-dispute"], ["Haute & Freddy", "haute-freddy"], ["The Hellp", "the-hellp"], ["Disco Dom", "disco-dom"], ["MPH", "mph"], ["Bella Kay", "bella-kay"], ["This Is Lorelei", "this-is-lorelei"], ["The Womack Sisters", "the-womack-sisters"], ["mary in the junkyard", "mary-in-the-junkyard"], ["Close Friends Only", "close-friends-only"], ["Obskür", "obskur"], ["Jacob Lusk", "jacob-lusk"], ["LEENALCHI", "leenalchi"], ["Bea Miller", "bea-miller"], ["Gang of Youths", "gang-of-youths"], ["Love Spells", "love-spells"], ["Rafael", null], ["Nirosta Steel", "nirosta-steel"], ["Ragie Ban", "ragie-ban"], ["Eli", null], ["Las Petunias", "las-petunias"], ["Violet Grohl", "violet-grohl"], ["Jackie Hollander", "jackie-hollander"], ["Jamback x Marsolo", "jamback-x-marsolo"], ["NOYA", null], ["Tame Impala", "tame-impala"], ["Phoebe Bridgers", "phoebe-bridgers"], ["Weezer", "weezer"], ["Tiësto", "tiesto"], ["Martin Garrix", "martin-garrix"], ["Robyn", "robyn"], ["Role Model", "role-model"], ["ADÉLA", "adela"], ["Måneskin", "maneskin"], ["Solomun", "solomun"], ["NCT", "nct"], ["Enigma", null], ["Underworld", "underworld"], ["Charlotte de Witte", "charlotte-de-witte"], ["Leon Bridges", "leon-bridges"], ["Cloonee", "cloonee"], ["Magdalena Bay", "magdalena-bay"], ["Barry Can't Swim", "barry-can-t-swim"], ["Boy Harsher", "boy-harsher"], ["KI/KI", "ki-ki"], ["Mariah the Scientist", "mariah-the-scientist"], ["Bad Gyal", "bad-gyal"], ["Basement", "basement"], ["Brutalismus 3000", "brutalismus-3000"], ["Beltran", "beltran"], ["underscores", "underscores"], ["SB19", "sb19"], ["Twin Tribes", "twin-tribes"], ["Odeal", "odeal"], ["Bassvictim", "bassvictim"], ["Los Pibes Chorros", "los-pibes-chorros"], ["Tiffany Day", "tiffany-day"], ["no na", "no-na"], ["Mathame", "mathame"], ["ear", "ear"], ["Vandelux", "vandelux"], ["rommulas", "rommulas"], ["Apollonia", "apollonia"], ["Getdown Services", "getdown-services"], ["Good Neighbours", "good-neighbours"], ["First Day Back", "first-day-back"], ["Jimi Jules", "jimi-jules"], ["Twisted Teens", "twisted-teens"], ["Murda Beatz", "murda-beatz"], ["Villanelle", "villanelle"], ["Kolter x Sidney Charles", "kolter-x-sidney-charles"], ["La Texana", "la-texana"], ["OMRI.", null], ["Volkoder", "volkoder"], ["Zimmer90", "zimmer90"], ["LuSiD", null], ["Dream Boat", null], ["SZA", "sza"], ["Don Toliver", "don-toliver"], ["DOM DOLLA", "dom-dolla"], ["Kygo", "kygo"], ["Empire of the Sun", "empire-of-the-sun"], ["Four Tet", "four-tet"], ["The Neighbourhood", "the-neighbourhood"], ["Becky G", "becky-g"], ["BABYMONSTER", "babymonster"], ["Amelie Lens x Sara Landry", "amelie-lens-x-sara-landry"], ["Remi Wolf", "remi-wolf"], ["Tove Lo", "tove-lo"], ["Victoria Monét", "victoria-monet"], ["EsDeeKid", "esdeekid"], ["Caroline Polachek", "caroline-polachek"], ["Chase & Status", "chase-status"], ["MUNA", "muna"], ["Boris Brejcha", "boris-brejcha"], ["Jorja Smith", "jorja-smith"], ["The Avalanches", "the-avalanches"], ["BOLO", null], ["Pennywise", "pennywise"], ["Freddie Gibbs", "freddie-gibbs"], ["Shygirl", "shygirl"], ["Julia Wolf", "julia-wolf"], ["Odd Mob", "odd-mob"], ["Ayra Starr", "ayra-starr"], ["Lambrini Girls", "lambrini-girls"], ["AKRIILA", "akriila"], ["Dinner Party", "dinner-party"], ["Silva Bumpa", "silva-bumpa"], ["DJ Habibeats", "dj-habibeats"], ["Chanel Beads", "chanel-beads"], ["Adam Ten", "adam-ten"], ["After", "after"], ["Zack Fox", "zack-fox"], ["Fat Dog", "fat-dog"], ["Omar+", "omar"], ["Genesis Owusu", "genesis-owusu"], ["Joshua Slone", "joshua-slone"], ["The Mainliners", null], ["Marten Lou x Alex Wann", "marten-lou-x-alex-wann"], ["ChaseWest", "chasewest"], ["Florence Road", "florence-road"], ["Jazzy", "jazzy"], ["TUL8TE", "tul8te"], ["Jakob Nowell and THE CASTLE", "jakob-nowell-and-the-castle"], ["Talón", null], ["Klave Efectiva", null], ["Daddy Yankee", "daddy-yankee"], ["Justice", "justice"]];
 
-var order, answers, i;
+var order, answers, i, shownAt = 0;
+var LOCK_MS = 250; // ignore input this long after a card appears, so a double click can't answer two
 var $ = function (id) { return document.getElementById(id); };
 
 function shuffle(a) {
@@ -73,10 +75,18 @@ function show() {
   $('running').textContent = 70 - score();
   $('name').textContent = a[0];
   var pic = $('pic');
-  pic.removeAttribute('src');
-  if (a[1]) pic.src = 'img/' + a[1] + '.jpg';
-  pic.alt = a[1] ? a[0] : '';
+  pic.textContent = '';
+  if (a[1]) {
+    var img = new Image(200, 200);
+    img.alt = a[0];
+    img.onerror = function () { if (img.parentNode === pic) pic.textContent = 'no photo'; };
+    img.src = 'img/' + a[1] + '.jpg';
+    pic.appendChild(img);
+  } else {
+    pic.textContent = 'no photo';
+  }
   $('back').disabled = i === 0;
+  shownAt = Date.now();
   if (i + 1 < order.length && order[i + 1][1]) new Image().src = 'img/' + order[i + 1][1] + '.jpg';
 }
 
@@ -91,13 +101,14 @@ function start() {
 }
 
 function answer(v) {
+  if (Date.now() - shownAt < LOCK_MS) return;
   answers[i] = v;
   i++;
   if (i < order.length) show(); else finish();
 }
 
 function back() {
-  if (i === 0) return;
+  if (i === 0 || Date.now() - shownAt < LOCK_MS) return;
   i--;
   answers.length = i;
   show();
@@ -122,7 +133,7 @@ $('back').onclick = back;
 if (!window.matchMedia('(hover: hover)').matches) $('keys').hidden = true;
 
 document.addEventListener('keydown', function (e) {
-  if ($('quiz').hidden || e.metaKey || e.ctrlKey || e.altKey) return;
+  if ($('quiz').hidden || e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
   var k = e.key.toLowerCase();
   if (k === 'y') answer(true);
   else if (k === 'n') answer(false);

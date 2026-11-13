@@ -15,6 +15,7 @@ button { font: inherit; padding: 0.7em 0; color: #000; background: #eee; border:
 #answers button { flex: 1; }
 #back { background: none; border: 0; padding: 0; text-decoration: underline; }
 #back:disabled { visibility: hidden; }
+#backrow { text-align: center; }
 #age { font-size: 4em; font-weight: bold; margin: 0; }
 small, .small { font-size: 0.85em; }
 [hidden] { display: none !important; }
@@ -32,13 +33,14 @@ small, .small { font-size: 0.85em; }
 </div>
 
 <div id="quiz" hidden>
-<p class="small"><span id="count"></span> &middot; current age: <span id="running"></span> &middot; <button id="back">back</button></p>
+<p class="small"><span id="count"></span> &middot; current age: <span id="running"></span></p>
 <div id="pic"></div>
 <p id="name"></p>
 <div id="answers">
 <button id="yes">Recognize</button>
 <button id="no">No idea</button>
 </div>
+<p id="backrow"><button id="back">back</button></p>
 <p class="small" id="keys">Keyboard: Y / N, Backspace to go back.</p>
 </div>
 

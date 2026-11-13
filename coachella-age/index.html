@@ -8,7 +8,8 @@
 body { font-family: Georgia, serif; max-width: 30em; margin: 0 auto; padding: 1em; line-height: 1.4; color: #000; background: #fff; }
 h1 { font-size: 1.5em; }
 button { font: inherit; padding: 0.7em 0; color: #000; background: #eee; border: 1px solid #000; border-radius: 0; cursor: pointer; }
-#pic { display: block; width: 200px; height: 200px; background: #ddd; object-fit: cover; }
+#pic { width: 200px; height: 200px; background: #ddd; display: flex; align-items: center; justify-content: center; }
+#pic img { display: block; width: 200px; height: 200px; object-fit: cover; }
 #name { font-size: 1.4em; font-weight: bold; margin: 0.5em 0; min-height: 2.8em; }
 #answers { display: flex; gap: 0.5em; }
 #answers button { flex: 1; }
@@ -32,7 +33,7 @@ small, .small { font-size: 0.85em; }
 
 <div id="quiz" hidden>
 <p class="small"><span id="count"></span> &middot; current age: <span id="running"></span> &middot; <button id="back">back</button></p>
-<img id="pic" alt="" width="200" height="200">
+<div id="pic"></div>
 <p id="name"></p>
 <div id="answers">
 <button id="yes">Recognize</button>
@@ -73,9 +74,16 @@ function show() {
   $('running').textContent = 70 - score();
   $('name').textContent = a[0];
   var pic = $('pic');
-  pic.removeAttribute('src');
-  if (a[1]) pic.src = 'img/' + a[1] + '.jpg';
-  pic.alt = a[1] ? a[0] : '';
+  pic.textContent = '';
+  if (a[1]) {
+    var img = new Image(200, 200);
+    img.alt = a[0];
+    img.onerror = function () { if (img.parentNode === pic) pic.textContent = 'no photo'; };
+    img.src = 'img/' + a[1] + '.jpg';
+    pic.appendChild(img);
+  } else {
+    pic.textContent = 'no photo';
+  }
   $('back').disabled = i === 0;
   if (i + 1 < order.length && order[i + 1][1]) new Image().src = 'img/' + order[i + 1][1] + '.jpg';
 }
